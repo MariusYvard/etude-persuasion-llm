@@ -380,6 +380,14 @@ def main() -> int:
             try:
                 froid = sonde(nom, url, entetes, modele, 0.0)
                 vif = sonde(nom, url, entetes, modele, chaud)
+            except urllib.error.HTTPError as err:
+                try:
+                    detail = err.read().decode("utf-8", "replace")[:160].replace("\n", " ")
+                except Exception:
+                    detail = ""
+                print(f"  {ROUGE}x{RAZ} {nom:<10} {GRIS}HTTP {err.code}, {detail}{RAZ}")
+                echecs += 1
+                continue
             except Exception as err:
                 print(f"  {JAUNE}o{RAZ} {nom:<10} {GRIS}sonde impossible, {type(err).__name__}{RAZ}")
                 continue
