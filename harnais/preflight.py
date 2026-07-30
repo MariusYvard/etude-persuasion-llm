@@ -60,10 +60,6 @@ def appel(url: str, entetes: dict) -> tuple:
         return False, f"{type(err).__name__}"
 
 
-def verifier_local(url: str) -> tuple:
-    if not url:
-        return None, "non configure"
-    return appel(url.rstrip("/") + "/api/tags", {})
 
 
 CONTROLES = [
@@ -92,11 +88,11 @@ CONTROLES = [
         ),
     ),
     (
-        "Google",
-        "GEMINI_API_KEY",
+        "NVIDIA",
+        "NVIDIA_API_KEY",
         lambda k: appel(
-            f"https://generativelanguage.googleapis.com/v1beta/models?key={k}",
-            {},
+            "https://integrate.api.nvidia.com/v1/models",
+            {"Authorization": f"Bearer {k}"},
         ),
     ),
 ]
@@ -130,12 +126,30 @@ def identifiants(url: str, entetes: dict) -> list:
     except Exception:
         return []
 
-MODELES_ATTENDUS = [
+GENERATEURS_ATTENDUS = [
     "GEN_MODEL_ANTHROPIC",
     "GEN_MODEL_OPENAI",
     "GEN_MODEL_MISTRAL",
-    "JUDGE_LOCAL_MODEL",
 ]
+
+# Lignee du modele de base, pas simple prefixe d'editeur.
+#
+# Piege : chez NVIDIA, "nvidia/llama-3.3-nemotron-super-49b" est un derive de Llama
+# et "nvidia/mistral-nemo-minitron-8b" un derive de Mistral. Un controle par prefixe
+# les classerait en famille "nvidia" et laisserait passer un juge Mistral-derive
+# notant les sorties du generateur Mistral. Le nom du modele prime sur l'editeur.
+LIGNEES = ("llama", "mistral", "mixtral", "gemma", "phi", "qwen", "yi",
+           "deepseek", "granite", "jamba", "dbrx", "palmyra", "nemotron",
+           "kimi", "glm", "minimax", "step", "zamba", "sea-lion", "claude", "gpt")
+
+
+def lignee(ident: str) -> str:
+    bas = ident.lower()
+    nom = bas.split("/", 1)[1] if "/" in bas else bas
+    for l in LIGNEES:
+        if l in nom:
+            return l
+    return bas.split("/")[0] if "/" in bas else nom.split("-")[0]
 
 
 def main() -> int:
@@ -158,23 +172,32 @@ def main() -> int:
         if not ok:
             echecs += 1
 
-    print("\nJuge local, famille D")
-    ok, detail = verifier_local(env.get("JUDGE_LOCAL_ENDPOINT", ""))
-    if ok is None:
-        print(f"  {JAUNE}o{RAZ} {GRIS}{detail}{RAZ}")
-    else:
-        marque = f"{VERT}v{RAZ}" if ok else f"{ROUGE}x{RAZ}"
-        print(f"  {marque} endpoint    {GRIS}{detail}{RAZ}")
-        if not ok:
-            echecs += 1
-
     print("\nIdentifiants de modeles, a figer avant production")
-    for var in MODELES_ATTENDUS:
+    cat_nvidia = None
+    if env.get("NVIDIA_API_KEY"):
+        cat_nvidia = identifiants(
+            "https://integrate.api.nvidia.com/v1/models",
+            {"Authorization": "Bearer " + env["NVIDIA_API_KEY"]},
+        )
+
+    dyn = sorted(k for k in env if k.startswith(("JUDGE_MODEL", "BUILDER_MODEL")))
+    for var in GENERATEURS_ATTENDUS + dyn:
         val = env.get(var, "")
         if not val:
             print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}non renseigne{RAZ}")
             echecs += 1
             continue
+
+        if var.startswith(("JUDGE_MODEL", "BUILDER_MODEL")):
+            if not cat_nvidia:
+                print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}{val}, catalogue NVIDIA illisible{RAZ}")
+            elif val in cat_nvidia:
+                print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}, existe chez NVIDIA{RAZ}")
+            else:
+                print(f"  {ROUGE}x{RAZ} {var:<22} {GRIS}{val}, INTROUVABLE chez NVIDIA{RAZ}")
+                echecs += 1
+            continue
+
         cible = next((c for c in CIBLES if c[0] == var), None)
         if cible is None:
             print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}{RAZ}")
@@ -188,6 +211,41 @@ def main() -> int:
         else:
             print(f"  {ROUGE}x{RAZ} {var:<22} {GRIS}{val}, INTROUVABLE chez {nom}{RAZ}")
             echecs += 1
+
+    print("\nDisjonction des lignees")
+    juges = [v for k, v in sorted(env.items())
+             if k.startswith("JUDGE_MODEL") and v]
+    builders = [v for k, v in sorted(env.items())
+                if k.startswith("BUILDER_MODEL") and v]
+    generateurs = [env.get(k, "") for k in
+                   ("GEN_MODEL_ANTHROPIC", "GEN_MODEL_OPENAI", "GEN_MODEL_MISTRAL")]
+    generateurs = [g for g in generateurs if g]
+
+    lign_gen = {lignee(g) for g in generateurs}
+    probleme = False
+
+    for etiquette, groupe in (("juge", juges), ("constructeur", builders)):
+        for m in groupe:
+            if lignee(m) in lign_gen:
+                print(f"  {ROUGE}x{RAZ} {etiquette} {m}")
+                print(f"    {GRIS}lignee '{lignee(m)}', identique a un generateur evalue{RAZ}")
+                probleme = True
+
+    croise = {lignee(b) for b in builders} & {lignee(j) for j in juges}
+    if croise:
+        print(f"  {ROUGE}x{RAZ} lignee partagee entre juges et constructeurs : {', '.join(sorted(croise))}")
+        print(f"    {GRIS}un juge validerait le realisme d'un texte ecrit par sa propre lignee{RAZ}")
+        probleme = True
+
+    if probleme:
+        echecs += 1
+    elif juges and builders:
+        print(f"  {VERT}v{RAZ} {len(juges)} juge(s), {len(builders)} constructeur(s), "
+              f"lignees toutes distinctes des generateurs")
+        print(f"    {GRIS}juges        : {', '.join(sorted({lignee(j) for j in juges}))}{RAZ}")
+        print(f"    {GRIS}constructeurs: {', '.join(sorted({lignee(b) for b in builders}))}{RAZ}")
+    else:
+        print(f"  {JAUNE}o{RAZ} {GRIS}controle impossible, juges ou constructeurs non renseignes{RAZ}")
 
     print("\nParametres d'echantillonnage, identiques pour les trois generateurs")
     for var in PARAMS_PARTAGES:
