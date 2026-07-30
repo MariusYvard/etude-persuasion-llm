@@ -1,0 +1,27 @@
+# Secrets, jamais commités
+.env
+.env.*
+!.env.example
+*.key
+*_api_key*
+credentials.json
+
+# Sorties brutes, non publiées ouvertement (préenregistrement section 9)
+resultats/brut/
+resultats/**/*.raw.jsonl
+corpus/genere/
+
+# Environnements et caches
+venv/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+node_modules/
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Dossier de candidature, prive : contient une adresse e-mail et des notes de strategie
+candidature/
