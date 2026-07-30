@@ -166,7 +166,7 @@ Chaque message est noté par exactement deux provenances garanties, l'américain
 
 **Pourquoi réintroduire un générateur comme juge.** Trois raisons.
 
-1. **Qualité de l'instrument.** La grille comporte onze codes plus deux canaux de transposition, appliqués à quatorze langues. C'est une tâche exigeante et les modèles de frontière y sont meilleurs.
+1. **Qualité de l'instrument.** La grille comporte onze codes plus deux canaux de transposition, appliqués à vingt langues et variantes. C'est une tâche exigeante et les modèles de frontière y sont meilleurs.
 2. **Équilibre de provenance.** Le vivier à poids ouverts penche vers la Chine. Les générateurs apportent trois provenances d'alignement (États-Unis, France, Chine) et corrigent ce déséquilibre par construction.
 3. **Coût nul ou presque.** Mistral tourne sur son palier gratuit et OpenAI sur ses tokens complémentaires. La part Anthropic représente environ 8 400 notations, soit à peu près 60 dollars, montant invariant par rapport au nombre de générateurs (section 3.4).
 
@@ -193,7 +193,7 @@ Quatre candidats supplémentaires restent au pilote, mobilisables si J2 ou J3 é
 
 Il serait tentant de composer un panel différent par langue, en confiant le CJK aux lignées chinoises et l'Asie du Sud-Est à un modèle spécialisé. C'est écarté pour le volet confirmatoire : **si les zones sont jugées par des instruments différents, un écart entre zones devient indistinguable d'un écart entre panels, et le contraste planifié n°3 qui porte H3 s'effondre.**
 
-Le panel est donc unique pour les quatorze langues. L'accord est rapporté langue par langue, et **les langues sous le seuil sortent du volet confirmatoire** plutôt que d'être confiées à un autre panel.
+Le panel est donc unique pour les vingt langues et variantes. L'accord est rapporté langue par langue, et **les langues sous le seuil sortent du volet confirmatoire** plutôt que d'être confiées à un autre panel.
 
 ### Volume
 
@@ -209,7 +209,7 @@ Le panel est donc unique pour les quatorze langues. L'accord est rapporté langu
 
 **Volume et calendrier.** 67 200 notations sur le vivier NVIDIA à 40 requêtes par minute, soit environ 28 heures. Deux nuits.
 
-**Le choix du modèle se fait après la validation stratifiée par langue, pas avant.** Le corpus couvre quatorze langues et un juge peut tenir en anglais puis céder sur le registre japonais ou l'alternance codique indonésienne. Le catalogue NVIDIA expose plusieurs familles utilisables (Meta, Alibaba, DeepSeek, Microsoft, NVIDIA), ce qui laisse de quoi basculer si le premier candidat échoue.
+**Le choix du modèle se fait après la validation stratifiée par langue, pas avant.** Le corpus couvre vingt langues et variantes et un juge peut tenir en anglais puis céder sur le registre japonais ou l'alternance codique indonésienne. Le catalogue NVIDIA expose plusieurs familles utilisables (Meta, Alibaba, DeepSeek, Microsoft, NVIDIA), ce qui laisse de quoi basculer si le premier candidat échoue.
 
 **Contrainte de disjonction, à ne pas relâcher.** Chaque juge doit être de lignée distincte des quatre générateurs. Elle mord immédiatement avec l'entrée d'un générateur chinois : `deepseek-v4-pro` occupe déjà le siège J3, ce qui **interdit de prendre DeepSeek comme quatrième générateur**, et les lignées `yi` et `step` sont déjà constructeurs du corpus. Le préflight le contrôle automatiquement.
 
@@ -223,7 +223,7 @@ Le panel est donc unique pour les quatorze langues. L'accord est rapporté langu
 
 **Validation stratifiée par langue, impérative.** L'accord juge-humain est calculé **par langue**, jamais en agrégé. Un alpha global satisfaisant peut masquer un juge correct en anglais et inexploitable en thaï ou en indonésien. Les langues sous le seuil sortent de l'analyse primaire pour les codes concernés, et le rapport le dit langue par langue.
 
-C'est la contrainte la plus exigeante de tout le dispositif de notation. La grille comporte onze codes plus deux canaux de transposition, appliqués à quatorze langues. **Un modèle de petite taille quantifié peut très bien tenir en anglais et s'effondrer sur le registre japonais ou l'alternance codique.** L'appareil de validation doit être capable de le détecter.
+C'est la contrainte la plus exigeante de tout le dispositif de notation. La grille comporte onze codes plus deux canaux de transposition, appliqués à vingt langues et variantes. **Un modèle de petite taille quantifié peut très bien tenir en anglais et s'effondrer sur le registre japonais ou l'alternance codique.** L'appareil de validation doit être capable de le détecter.
 
 **Escalade prévue.** Si le panel de juges échoue le seuil sur un sous-ensemble de langues, deux options préenregistrées, dans cet ordre : basculer ces langues seules vers un juge payant, ou retirer les codes concernés de l'analyse primaire pour ces langues. **Le choix entre les deux est fait avant de voir les résultats de l'étude, sur la seule base des scores d'accord du pilote.**
 
@@ -388,7 +388,7 @@ Le registre effectivement employé dans les bios utilisateurs coréennes (해요
 Conséquence sur la puissance, à énoncer telle quelle :
 
 - **Contraste n°3, canal normatif** : 80 personas contre 80 en Amérique du Nord. Puissance équivalente à celle des six autres zones. Aucune dégradation.
-- **Canal registre, volet japonais** : 40 personas. Adéquat pour un effet de grande taille, marginal pour un effet modéré. **Ce volet est rapporté en descriptif, pas comme contraste planifié.** C'est cohérent avec le fait qu'il ne couvre de toute façon que trois sous-zones sur quatorze.
+- **Canal registre, volet japonais** : 40 personas. Adéquat pour un effet de grande taille, marginal pour un effet modéré. **Ce volet est rapporté en descriptif, pas comme contraste planifié.** C'est cohérent avec le fait qu'il ne couvre de toute façon que trois sous-zones sur vingt.
 - **Annexe exploratoire Corée et Taïwan** : 20 personas chacune, effectif qui permet une description utile plutôt qu'une mention symbolique.
 
 ### 4.3 Clause de restriction, Europe du Sud
@@ -511,6 +511,47 @@ Ce détail est nécessaire, pas cosmétique. Chez NVIDIA, `nvidia/llama-3.3-nemo
 
 Langue locale. Sous-échantillon anglophone conservé pour la vérifiabilité directe par l'auteur.
 
+#### Périmètre linguistique, énuméré le 30 juillet 2026
+
+**Le protocole annonçait quatorze langues sans jamais les lister, et le compte était faux.** L'énumération ci-dessous le corrige et devient la référence. Elle est déclenchée par le maintien de la Belgique, mais le défaut lui préexistait : l'allemand, le néerlandais et le suédois manquaient déjà alors que l'Allemagne, les Pays-Bas et la Suède figurent au périmètre depuis la scission de l'Europe.
+
+| Langue | Zone | Sous-zones |
+|---|---|---|
+| Anglais | Amérique du Nord, Europe du Nord-Ouest, Asie du Sud, Asie du Sud-Est | États-Unis, Canada, Royaume-Uni, Inde, Philippines |
+| Français | Europe du Nord-Ouest | France, Belgique francophone |
+| **Allemand** | Europe du Nord-Ouest | Allemagne |
+| **Néerlandais** | Europe du Nord-Ouest | Pays-Bas, Belgique néerlandophone |
+| **Suédois** | Europe du Nord-Ouest | Suède |
+| Danois | Europe du Nord-Ouest | Danemark |
+| Norvégien | Europe du Nord-Ouest | Norvège |
+| Finnois | Europe du Nord-Ouest | Finlande |
+| Espagnol péninsulaire | Europe du Sud | Espagne |
+| Italien | Europe du Sud | Italie |
+| Portugais européen | Europe du Sud | Portugal |
+| Grec | Europe du Sud | Grèce |
+| Espagnol latino-américain | Amérique latine | Mexique, Colombie, Argentine, Chili, Pérou |
+| Portugais brésilien | Amérique latine | Brésil |
+| Indonésien | Asie du Sud-Est | Indonésie |
+| Thaï | Asie du Sud-Est | Thaïlande |
+| Vietnamien | Asie du Sud-Est | Vietnam |
+| Japonais | Asie de l'Est | Japon |
+| Coréen | Asie de l'Est | Corée du Sud |
+| Chinois traditionnel | Asie de l'Est | Taïwan |
+
+**Vingt entrées, dix-huit langues distinctes**, l'espagnol et le portugais étant chacun traité en deux variantes régionales que le protocole ne confond pas.
+
+**Les trois ajouts en gras coûtent peu, et il faut dire pourquoi.** La validation de la notation a été portée de la langue à la zone, sept strates au lieu de quatorze, donc le budget de codage humain ne bouge pas. Le volume de génération ne bouge pas non plus, les 560 personas étant redistribuées et non multipliées. Le seul surcoût réel est la traduction puis la rétrotraduction des cinq consignes vers trois langues supplémentaires. L'allemand, le néerlandais et le suédois sont des langues à ressources abondantes, sur lesquelles les juges à poids ouverts sont bien couverts.
+
+**Belgique.** Les personas belges sont générées en français ou en néerlandais selon la sous-zone, et scorées sur les normes belges, ni françaises ni néerlandaises. Motif : l'unique item du catalogue où la Belgique diffère, l'âge de décohabitation, est publié au niveau national et n'existe ni pour la Wallonie ni pour la Flandre. Rattacher une persona belge francophone à la France l'aurait rendue linguistiquement juste et normativement fausse, puisqu'elle aurait été jugée sur une décohabitation de 23,8 ans au lieu de 26,2.
+
+**Valeur belge vérifiée à la source le 30 juillet 2026**, API de diffusion Eurostat, `yth_demo_030`, `sex=T`, `geo=BE` : 26,2 en 2024 et 26,2 en 2025. La coïncidence avec la moyenne de l'UE-27, elle aussi à 26,2 en 2024, a été contrôlée et n'est pas une confusion d'agrégat.
+
+**Canada.** Les personas canadiennes sont anglophones. Le cas francophone québécois n'est pas traité, alors que la part d'unions libres y est de 42,7 % contre 17 % dans le reste du pays. Manque de couverture déclaré, pas oubli.
+
+**Suisse, écartée, et le motif est factuel.** Le périmètre européen est défini par l'âge de décohabitation, indicateur Eurostat `yth_demo_030`. **Cet indicateur ne couvre pas la Suisse**, vérification faite le 30 juillet 2026 sur la même API : aucune observation pour `geo=CH`, sur aucune des vingt-six années disponibles. La Suisse ne peut donc pas être placée sur le critère qui structure la scission européenne, exactement comme l'Europe centrale et orientale. L'y rattacher reviendrait à fabriquer une appartenance.
+
+Le problème n'est pas linguistique, et l'ajout de l'allemand en règle cette part : une persona suisse germanophone ou francophone serait représentable. Elle resterait normativement inplaçable. Si la Suisse doit entrer, il faut d'abord un substitut publié au critère, du côté de l'Office fédéral de la statistique, et le Tessin italophone poserait en outre le cas d'une langue rattachée à l'autre bras européen.
+
 **Décision sur l'Inde, à déclarer comme hypothèse.** La part de l'anglais dans les bios indiennes n'est documentée par aucune source. Le protocole génère en anglais indien avec insertions hindi ou tamoul, **en assumant explicitement l'hypothèse**, faute de corpus annoté.
 
 **Décision sur la Scandinavie.** L'hypothèse d'un taux d'anglais élevé dans les bios scandinaves **n'est ni confirmée ni infirmée par aucune source**. Elle n'est pas inscrite dans le corpus.
@@ -559,7 +600,7 @@ Ancrée dans la taxonomie des archétypes documentés du corpus de conseils publ
 | Espagne | Recours à l'humour significativement plus faible que chez les Britanniques (455 profils) | Mobiliser l'humour comme stratégie dominante |
 | Grèce | Norme documentée sur le seuil sexuel d'entrée de jeu (198 interactions) | Franchir la ligne sexuelle dès l'ouverture |
 
-**Sous-zones exclues de ce canal, faute de convention établie : Corée du Sud, Taïwan, Italie, Portugal, Indonésie, Thaïlande, Vietnam, Philippines, Inde, ensemble de l'Amérique latine, France et pays nordiques.** C'est une restriction sévère et elle reflète l'état réel de la littérature : aucune analyse de corpus de bios n'existe pour treize des quatorze langues du projet.
+**Sous-zones exclues de ce canal, faute de convention établie : Corée du Sud, Taïwan, Italie, Portugal, Indonésie, Thaïlande, Vietnam, Philippines, Inde, ensemble de l'Amérique latine, France et pays nordiques.** C'est une restriction sévère et elle reflète l'état réel de la littérature : aucune analyse de corpus de bios n'existe pour dix-sept des vingt langues et variantes du projet.
 
 **Canal 2, transposition normative.** Écart à une norme sociale ou juridique documentée. Ne dépend pas du registre d'écriture, donc scorable dans des sous-zones exclues du canal 1.
 
@@ -708,7 +749,7 @@ Ce dénominateur neutralise les deux confondants ensemble : la taille inégale d
 | Contraste planifié n°3, Amérique du Nord contre chacune des six autres zones | Canal 2, normatif | Confirmatoire, sur le taux rapporté à l'occasion. Personas taïwanaises exclues, Asie de l'Est entre avec 60 personas sur 80 |
 | Contraste planifié n°4, Europe du Nord-Ouest contre Europe du Sud | Canal 2, normatif | Confirmatoire, **restreint aux catégories documentées sur les deux bras**, soit les catégories 2, 3, 5 et 6. Les catégories 1 et 4 sont vides côté Nord-Ouest et sortent du contraste |
 | Contraste planifié n°5, générateur chinois contre générateurs occidentaux | Canal 2, normatif | Exploratoire, **calculé sur les juges J2 et J3 seulement**, motif en section 3.6.3 |
-| Écarts de registre, Japon, Espagne, Grèce | Canal 1, registre | **Descriptif, pas de test confirmatoire.** Effectifs de 40 à 80 selon la sous-zone, et couverture limitée à trois sous-zones sur quatorze |
+| Écarts de registre, Japon, Espagne, Grèce | Canal 1, registre | **Descriptif, pas de test confirmatoire.** Effectifs de 40 à 80 selon la sous-zone, et couverture limitée à trois sous-zones sur vingt |
 | Catégorie ouverte, erreurs hors liste | Les deux | Exploratoire |
 
 **Les deux canaux ne sont jamais agrégés en un score unique de transposition.** Un message peut être normativement inapplicable et parfaitement conforme au registre, et l'inverse. Les confondre produirait un indicateur ininterprétable.
@@ -740,7 +781,7 @@ La version 1.4 faisait coexister trois seuils sur deux référents différents, 
 
 ### Sous-échantillon codé par des humains, dimensionnement corrigé
 
-**Correction du 30 juillet 2026.** La version 1.4 exigeait une validation stratifiée **par langue** sur un sous-échantillon de 5 % de l'étage d'ancrage, soit environ 210 messages répartis sur quatorze langues. Quinze items par langue pour onze codes plus deux canaux ne produisent pas un alpha interprétable. **La contrainte que le protocole qualifiait de plus exigeante du dispositif était inexécutable à l'effectif qu'il lui allouait.**
+**Correction du 30 juillet 2026.** La version 1.4 exigeait une validation stratifiée **par langue** sur un sous-échantillon de 5 % de l'étage d'ancrage, soit environ 210 messages répartis sur l'ensemble des langues du corpus. Quinze items par langue pour onze codes plus deux canaux ne produisent pas un alpha interprétable. **La contrainte que le protocole qualifiait de plus exigeante du dispositif était inexécutable à l'effectif qu'il lui allouait.**
 
 **Validation portée à la zone et non à la langue**, sept strates au lieu de quatorze, environ 30 messages par zone, ce qui tient dans le budget existant. En conséquence directe, **aucune revendication de fidélité par langue n'est admise dans la publication**, et les alphas sont rapportés zone par zone.
 
@@ -852,13 +893,13 @@ Ce qui ne l'a pas été : la taxonomie elle-même, qui provient de la littératu
 
 1. **Qualité documentaire très inégale entre zones.** Deux zones solidement documentées (Amérique du Nord, Europe du Nord-Ouest), deux moyennement (Amérique latine, Asie de l'Est sur son volet japonais), trois reposant largement sur des sources d'entreprise non auditées ou sur des échantillons de convenance (Europe du Sud, Asie du Sud, Asie du Sud-Est). Les revendications sont restreintes en conséquence, zone par zone, par les clauses des sections 4.2 et 4.3.
 
-2. **Aucune analyse de corpus de bios n'existe pour treize des quatorze langues de l'étude.** Le français, l'italien, le portugais, le danois, le norvégien, le finnois, l'indonésien, le thaï, le vietnamien, le coréen, le chinois traditionnel, l'hindi et l'espagnol latino-américain sont tous des angles morts. Le japonais fait exception, et l'espagnol péninsulaire et le grec ne sont couverts que partiellement, par un seul corpus chacun. **Conséquence : le canal 1 du codage de transposition ne couvre que trois sous-zones.**
+2. **Aucune analyse de corpus de bios n'existe pour dix-sept des vingt langues et variantes de l'étude.** Le français, l'italien, le portugais, le danois, le norvégien, le finnois, l'indonésien, le thaï, le vietnamien, le coréen, le chinois traditionnel, l'hindi et l'espagnol latino-américain, l'allemand, le néerlandais et le suédois sont tous des angles morts. Le japonais fait exception, et l'espagnol péninsulaire et le grec ne sont couverts que partiellement, par un seul corpus chacun. **Conséquence : le canal 1 du codage de transposition ne couvre que trois sous-zones.**
 
 3. **Aucune donnée comportementale n'existe pour l'Amérique latine, l'Asie du Sud, l'Asie du Sud-Est ni l'Europe du Sud.** Taux de match, initiation, taux de réponse et longueur des messages sont non documentés pour ces quatre zones.
 
 3bis. **L'Europe centrale et orientale est exclue du corpus.** Pologne, Roumanie, Hongrie et Tchéquie ne relèvent ni de la zone Nord-Ouest ni de la zone Sud sur le critère structurant retenu, et la documentation y est quasi nulle. C'est un manque de couverture, pas une absence de pertinence, et une piste de travail ultérieur.
 
-3ter. **Le canal registre du codage de transposition ne couvre que trois sous-zones sur quatorze** : Japon, Espagne et Grèce. Il est rapporté en descriptif et ne porte aucun contraste confirmatoire. Les personas coréennes et taïwanaises en sont exclues faute de convention de bio établie, mais participent au canal normatif, donc au contraste planifié n°3. Leur registre d'écriture n'est validé par aucune source et le rapport ne doit revendiquer aucune fidélité sur ce point.
+3ter. **Le canal registre du codage de transposition ne couvre que trois sous-zones sur vingt** : Japon, Espagne et Grèce. Il est rapporté en descriptif et ne porte aucun contraste confirmatoire. Les personas coréennes et taïwanaises en sont exclues faute de convention de bio établie, mais participent au canal normatif, donc au contraste planifié n°3. Leur registre d'écriture n'est validé par aucune source et le rapport ne doit revendiquer aucune fidélité sur ce point.
 
 4. **Le réalisme des personas est validé par discrimination en aveugle, pas par comparaison à des profils réels**, puisqu'aucun profil réel n'est collecté. La validation établit l'homogénéité interne du corpus, pas sa fidélité au réel.
 
@@ -980,7 +1021,8 @@ Audit adversarial mené avant la première génération. **Le dispositif de la v
 - [ ] **`microsoft/phi-3.5-moe-instruct` comme remplaçant J2.** Largement distillé sur des sorties de classe GPT. La disjonction de lignée ne capte pas ce chemin, qui est pourtant le mécanisme même de la préférence pour soi. À remplacer ou à déclarer.
 - [ ] **Écho des paramètres d'échantillonnage.** Le préflight vérifie que les valeurs sont figées au `.env`, pas qu'un fournisseur les a acceptées plutôt qu'ignorées silencieusement. Le critère 3 tomberait sans alerte.
 - [ ] **Item de catégorie 5 pour l'Asie du Sud**, borné à l'Uttarakhand, adossé à un droit amendé en janvier 2026 et à un second État en attente. État à revérifier à la date de gel.
-- [ ] **Langues de la zone Europe du Nord-Ouest.** Elle compte neuf pays pour un jeu de quatorze langues qui ne comprend ni le néerlandais ni l'allemand. Le maintien de la Belgique rend la question concrète : une persona belge est francophone ou néerlandophone, et seul le français est disponible. À trancher avant le gel, soit en générant ces personas en français et en anglais avec déclaration explicite, soit en ajoutant les deux langues au périmètre.
+- [x] **Périmètre linguistique, tranché le 30 juillet 2026 : les langues manquantes entrent au périmètre.** Il en manquait trois et non deux, l'allemand, le néerlandais et le suédois, défaut antérieur à la question belge. Le protocole énumère désormais vingt entrées pour dix-huit langues distinctes, section 6. Coût nul sur le codage humain et sur le volume, la validation ayant été portée à la zone. L'option consistant à rattacher la Belgique francophone à la France et la néerlandophone aux Pays-Bas est écartée : elle rendait la persona linguistiquement juste et normativement fausse, la décohabitation belge (26,2) différant de la française (23,8) et de la néerlandaise (23,4).
+- [x] **Suisse, écartée le 30 juillet 2026.** Eurostat `yth_demo_030` ne publie aucune observation pour `geo=CH`, vérifié à la source. Le pays ne peut pas être placé sur le critère qui structure la scission européenne. Réexaminable si un substitut publié est trouvé côté Office fédéral de la statistique, le Tessin italophone restant un cas à part.
 - [ ] **Correction de trois fiches de sources** relevées à l'audit : `fan2026degree` porte un titre paraphrasé et des initiales fausses, l'autrice de l'ancrage grec est Evanthia Kavroulaki et non Eleni, le dossier 09 donne 31,5 % là où la source primaire donne 26,8 %.
 
 ### Tranché le 28 juillet 2026
