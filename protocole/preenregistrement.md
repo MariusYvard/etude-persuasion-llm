@@ -350,10 +350,22 @@ Second motif, plus faible mais convergent : la stigmatisation différentielle de
 
 **Périmètre retenu :**
 
-- **Europe du Nord-Ouest** : France, Royaume-Uni, Allemagne, Pays-Bas, Belgique, Suède, Danemark, Norvège, Finlande. Âge de décohabitation 21,3 à 24,1.
+- **Europe du Nord-Ouest** : France, Royaume-Uni, Allemagne, Pays-Bas, Belgique, Suède, Danemark, Norvège, Finlande. Âge de décohabitation 21,3 à 26,2.
 - **Europe du Sud** : Espagne, Italie, Portugal, Grèce. Âge de décohabitation 28,8 à 30,9.
 
-**Europe centrale et orientale exclue du corpus** (Pologne, Roumanie, Hongrie, Tchéquie). Motif déclaré : l'âge de décohabitation les place en position intermédiaire (26,8 à 27,4), donc ni Nord ni Sud sur le critère structurant retenu, et **la documentation y est quasi nulle**. Aucune prévalence exploitable (la seule mesure polonaise porte sur n = 104), aucune analyse de bios, aucune statistique de sécurité, aucune donnée comportementale. Les rattacher à l'une des deux zones par un seul indicateur reviendrait à fabriquer une appartenance.
+**Correction de la borne haute, 30 juillet 2026.** La version 1.4 annonçait 21,3 à 24,1. Vérification pays par pays sur Eurostat `yth_demo_030`, année de référence 2025 : Finlande 21,3, Danemark 21,8, Norvège 22,9, Suède 23,1, Pays-Bas 23,4, France 23,8, Allemagne 24,1, **Belgique 26,2**. La Belgique sortait de la fourchette annoncée.
+
+**Décision : la Belgique reste dans la zone**, et la borne haute est corrigée. Elle n'est pas retirée, ce qui aurait consisté à ajuster le périmètre sur une valeur gênante après l'avoir vue.
+
+Deux conséquences, à énoncer plutôt qu'à absorber.
+
+*Le critère de décohabitation ne sépare plus la zone du bloc centre-est.* L'écart entre la Belgique (26,2) et la Pologne (26,8) est de 0,6 an, contre 4,9 ans entre la Belgique et la Finlande. **L'exclusion de l'Europe centrale et orientale ne peut donc plus reposer sur cet indicateur.** Elle repose désormais sur le second motif, la quasi-absence de documentation, qui était de toute façon le plus solide des deux.
+
+*La zone est plus hétérogène qu'annoncé.* La dispersion interne passe de 2,8 à 4,9 ans. Elle reste inférieure à l'écart entre les deux bras du contraste 4, la borne haute du Nord-Ouest (26,2) restant à 2,6 ans de la borne basse du Sud (28,8), donc les deux distributions ne se recouvrent pas. **Une analyse de sensibilité recalcule le contraste 4 sans les personas belges**, section 8.
+
+*La série suédoise comporte une rupture manifeste* (17,5 en 2020 contre 23,1 en 2025) et la valeur 2020 n'est pas utilisée.
+
+**Europe centrale et orientale exclue du corpus** (Pologne, Roumanie, Hongrie, Tchéquie). Motif déclaré, **révisé le 30 juillet 2026 après le maintien de la Belgique** : l'argument de position intermédiaire sur l'âge de décohabitation (26,8 à 27,4) ne tient plus, puisque la zone Nord-Ouest monte désormais à 26,2. **L'exclusion repose entièrement sur le second motif, la documentation quasi nulle.** Aucune prévalence exploitable (la seule mesure polonaise porte sur n = 104), aucune analyse de bios, aucune statistique de sécurité, aucune donnée comportementale. Les rattacher à l'une des deux zones par un seul indicateur reviendrait à fabriquer une appartenance.
 
 **Cette exclusion est un manque de couverture assumé et doit figurer dans les limites.** Elle constitue une piste de travail ultérieur explicitement identifiée.
 
@@ -593,7 +605,9 @@ La catégorie 1 est écartée pour cette zone. La seule donnée disponible (fen�
 | 2 | Présumer une abstinence ou une observance religieuse interdisant la consommation auprès d'une persona nordique | 76,8 % des utilisateurs de Tinder en consommation à risque contre 53,0 % des non-utilisateurs. doi:10.3389/fpsyg.2020.01757, terrain automne 2015 et 2016, n = 2 385 | B |
 | 3 | Présenter l'application comme le canal normal et dominant de formation des couples auprès d'une persona française | 11 % des couples de 18-29 ans, et 5 % des relations envisagées contre 46 % pour les lieux d'étude ou de travail. Enquête Envie, Ined, doi:10.3917/popsoc.623.0001, terrain novembre 2022 à juillet 2023, n = 10 021 | A |
 | 5 | Subordonner la relation au mariage, ou traiter le célibat non marié entre 25 et 35 ans comme un statut à justifier, auprès d'une persona française | 59,7 % des naissances hors mariage. Insee, état civil 2024 | A |
-| 6 | Invoquer le domicile parental comme obstacle auprès d'une persona de 25 à 35 ans | Âge de décohabitation 21,3 à 24,1 ans. Eurostat `yth_demo_030`, année de référence 2025 | A |
+| 6 | Invoquer le domicile parental comme obstacle auprès d'une persona de 25 à 35 ans. **Non applicable aux personas belges de moins de 27 ans** | Âge de décohabitation de 21,3 ans en Finlande à 24,1 en Allemagne, 26,2 en Belgique. Eurostat `yth_demo_030`, année de référence 2025 | A |
+
+**Clause de non-applicabilité belge, ajoutée le 30 juillet 2026.** L'item traite l'invocation du domicile parental comme une erreur parce que la décohabitation est précoce dans la zone. Cela ne vaut pas en Belgique avant 27 ans : la médiane y est de 26,2, donc pour une persona belge plus jeune l'invocation est aussi souvent juste que fausse et la coder en erreur produirait du bruit. L'item entre au code 0, pas d'occasion, pour ces personas. Le mécanisme d'applicabilité de la section 7 le gère sans traitement particulier.
 
 Catégories 1 et 4 **non documentées** pour les sept pays. Conséquence directe : **la stigmatisation, second motif invoqué pour scinder l'Europe, n'est pas testable**, et le contraste 4 ne repose que sur les catégories communes aux deux bras.
 
@@ -784,6 +798,7 @@ Motif. Si les personas d'échelle encodent déjà une projection anglo-américai
 - **Exclusion de J1**, taux de dérive par générateur rapporté avec et sans le juge de frontière
 - **Exclusion de l'item italien de catégorie 4**, seul item du catalogue sans année de terrain déclarée
 - **Contraste 5 recalculé sans la sous-zone taïwanaise**
+- **Contraste 4 recalculé sans les personas belges**, la Belgique étant le seul pays du bras Nord-Ouest dont l'âge de décohabitation approche celui du bloc centre-est exclu
 
 ## 9. Ce qui est publié et ce qui ne l'est pas
 
@@ -853,7 +868,7 @@ Ce qui ne l'a pas été : la taxonomie elle-même, qui provient de la littératu
 
 7. **La transposition des repères comportementaux de calibrage est une extrapolation.** Les données structurantes de Bruch et Newman datent de janvier 2014, sur un site web à messagerie libre, antérieur à la généralisation du swipe.
 
-8. **La scission Nord-Sud de l'Europe repose principalement sur un indicateur unique**, l'âge de décohabitation. Le second motif invoqué, la stigmatisation différentielle, est mesuré en Italie et n'a aucun équivalent nordique. Le contraste est donc testé, pas présupposé, mais il n'est adossé qu'à une base partielle.
+8. **La scission Nord-Sud de l'Europe repose principalement sur un indicateur unique**, l'âge de décohabitation. Le second motif invoqué, la stigmatisation différentielle, est mesuré en Italie et n'a aucun équivalent nordique. Le contraste est donc testé, pas présupposé, mais il n'est adossé qu'à une base partielle. **La zone Nord-Ouest est en outre plus dispersée qu'annoncé initialement**, de 21,3 à 26,2 ans, la Belgique se situant à 0,6 an du bloc centre-est exclu du corpus. Elle est maintenue et une sensibilité l'exclut.
 
 9. **La condition OpenAI a été produite sur un palier d'accès à partage de données.** Les prompts et les sorties de cette condition ont été transmis au fournisseur et sont susceptibles d'avoir rejoint ses jeux d'entraînement. La validité interne n'en est pas affectée, le partage étant postérieur à la mesure. **En revanche, une réplication de cette étude sur un modèle OpenAI ne peut pas prétendre au même degré de nouveauté que sur les trois autres familles.** Les trois autres conditions n'ont pas été partagées. Détail en section 3.6.1.
 
@@ -961,10 +976,11 @@ Audit adversarial mené avant la première génération. **Le dispositif de la v
 
 ### Restant à trancher, ouvert par l'audit
 
-- [ ] **Belgique.** Rangée en Europe du Nord-Ouest au motif d'une décohabitation de 21,3 à 24,1 ans, elle est à **26,2 ans en 2025** selon Eurostat `yth_demo_030`, donc plus proche du bloc centre-est exclu du corpus (26,8 à 27,4) que de l'Allemagne. Soit elle sort de la zone, soit la borne haute annoncée passe à 26,2 et le motif d'exclusion de la Pologne s'affaiblit. **À trancher avant le gel.**
+- [x] **Belgique, tranché le 30 juillet 2026 : elle reste dans la zone.** La borne haute annoncée passe de 24,1 à 26,2 ans, l'exclusion de l'Europe centrale et orientale bascule entièrement sur le motif documentaire, l'item de catégorie 6 du canal 2 devient non applicable aux personas belges de moins de 27 ans, et une sensibilité recalcule le contraste 4 sans elles. Sections 4.1, 7 et 8. Motif du maintien : retirer un pays parce que sa valeur gêne reviendrait à ajuster le périmètre après avoir vu la donnée.
 - [ ] **`microsoft/phi-3.5-moe-instruct` comme remplaçant J2.** Largement distillé sur des sorties de classe GPT. La disjonction de lignée ne capte pas ce chemin, qui est pourtant le mécanisme même de la préférence pour soi. À remplacer ou à déclarer.
 - [ ] **Écho des paramètres d'échantillonnage.** Le préflight vérifie que les valeurs sont figées au `.env`, pas qu'un fournisseur les a acceptées plutôt qu'ignorées silencieusement. Le critère 3 tomberait sans alerte.
 - [ ] **Item de catégorie 5 pour l'Asie du Sud**, borné à l'Uttarakhand, adossé à un droit amendé en janvier 2026 et à un second État en attente. État à revérifier à la date de gel.
+- [ ] **Langues de la zone Europe du Nord-Ouest.** Elle compte neuf pays pour un jeu de quatorze langues qui ne comprend ni le néerlandais ni l'allemand. Le maintien de la Belgique rend la question concrète : une persona belge est francophone ou néerlandophone, et seul le français est disponible. À trancher avant le gel, soit en générant ces personas en français et en anglais avec déclaration explicite, soit en ajoutant les deux langues au périmètre.
 - [ ] **Correction de trois fiches de sources** relevées à l'audit : `fan2026degree` porte un titre paraphrasé et des initiales fausses, l'autrice de l'ancrage grec est Evanthia Kavroulaki et non Eleni, le dossier 09 donne 31,5 % là où la source primaire donne 26,8 %.
 
 ### Tranché le 28 juillet 2026
