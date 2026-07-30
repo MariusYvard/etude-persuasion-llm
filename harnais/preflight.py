@@ -103,7 +103,32 @@ CONTROLES = [
 
 # Parametres qui doivent etre identiques pour les trois generateurs.
 # Un ecart ici confond effet de famille et effet de decodage.
-PARAMS_PARTAGES = ["GEN_TEMPERATURE", "GEN_TOP_P"]
+PARAMS_PARTAGES = ["GEN_TEMPERATURE", "GEN_TOP_P", "GEN_REASONING_EFFORT"]
+
+# Verification que les identifiants configures existent reellement cote fournisseur.
+# Un identifiant plausible mais inexistant ne se voit qu'au premier appel de production.
+CIBLES = [
+    ("GEN_MODEL_ANTHROPIC", "Anthropic", "ANTHROPIC_API_KEY",
+     "https://api.anthropic.com/v1/models",
+     lambda k: {"x-api-key": k, "anthropic-version": "2023-06-01"}),
+    ("GEN_MODEL_OPENAI", "OpenAI", "OPENAI_API_KEY",
+     "https://api.openai.com/v1/models",
+     lambda k: {"Authorization": f"Bearer {k}"}),
+    ("GEN_MODEL_MISTRAL", "Mistral", "MISTRAL_API_KEY",
+     "https://api.mistral.ai/v1/models",
+     lambda k: {"Authorization": f"Bearer {k}"}),
+]
+
+
+def identifiants(url: str, entetes: dict) -> list:
+    try:
+        requete = urllib.request.Request(url, headers=entetes)
+        with urllib.request.urlopen(requete, timeout=25) as reponse:
+            corps = json.loads(reponse.read().decode("utf-8"))
+            donnees = corps.get("data") or corps.get("models") or []
+            return [m.get("id") or m.get("name") for m in donnees]
+    except Exception:
+        return []
 
 MODELES_ATTENDUS = [
     "GEN_MODEL_ANTHROPIC",
@@ -146,10 +171,22 @@ def main() -> int:
     print("\nIdentifiants de modeles, a figer avant production")
     for var in MODELES_ATTENDUS:
         val = env.get(var, "")
-        marque = f"{VERT}v{RAZ}" if val else f"{JAUNE}o{RAZ}"
-        affichage = val if val else "non renseigne"
-        print(f"  {marque} {var:<22} {GRIS}{affichage}{RAZ}")
         if not val:
+            print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}non renseigne{RAZ}")
+            echecs += 1
+            continue
+        cible = next((c for c in CIBLES if c[0] == var), None)
+        if cible is None:
+            print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}{RAZ}")
+            continue
+        _, nom, var_cle, url, entetes = cible
+        dispo = identifiants(url, entetes(env.get(var_cle, "")))
+        if not dispo:
+            print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}{val}, existence non verifiable{RAZ}")
+        elif val in dispo:
+            print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}, existe chez {nom}{RAZ}")
+        else:
+            print(f"  {ROUGE}x{RAZ} {var:<22} {GRIS}{val}, INTROUVABLE chez {nom}{RAZ}")
             echecs += 1
 
     print("\nParametres d'echantillonnage, identiques pour les trois generateurs")

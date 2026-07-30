@@ -2,7 +2,7 @@
 
 **Statut : brouillon, non figé.** Ce document doit être horodaté et versionné dans le dépôt **avant la première génération**. Toute modification postérieure à la première génération est un amendement, à signaler comme tel dans la publication.
 
-Version 0.9, 30 juillet 2026.
+Version 1.0, 30 juillet 2026.
 
 ## 1. Objet
 
@@ -109,7 +109,23 @@ Toute autre comparaison est exploratoire et sera étiquetée comme telle.
 
 1. **Trois familles distinctes**, c'est-à-dire trois lignées de préentraînement et d'alignement différentes. Trois versions d'une même lignée mesureraient les manies de cette lignée, pas un phénomène général.
 2. **Au moins un modèle à poids ouverts exécutable en local.** Seul composant qui restera reproductible quand les modèles propriétaires auront été dépréciés, et seul dont la version puisse être épinglée exactement.
-3. **Paramètres d'échantillonnage identiques pour les trois**, température et top_p figés et préenregistrés. Sans cela, effet de modèle et effet de décodage sont confondus.
+3. **Paramètres d'échantillonnage identiques pour les trois**, figés et préenregistrés. Sans cela, effet de modèle et effet de décodage sont confondus.
+
+**Valeurs figées le 30 juillet 2026, avec leur justification.**
+
+| Paramètre | Valeur | Motif |
+|---|---|---|
+| `temperature` | **1.0** | Le plan prévoit 3 tirages par persona et par condition. Ces tirages n'ont de sens que s'il existe une variance d'échantillonnage. À température 0 ils seraient quasi identiques et la structure du plan s'effondrerait. 1.0 est en outre le défaut des deux plus grands fournisseurs, donc ce que reçoit un utilisateur réel. |
+| `top_p` | **1.0** | **C'est le choix le plus important de ce tableau.** Un échantillonnage nucleus à 0,9 tronque la queue de la distribution. Or c'est précisément dans cette queue que vivent les sorties inhabituelles, y compris, selon toute vraisemblance, les procédés manipulatoires que l'étude cherche à détecter. Tronquer biaiserait mécaniquement contre H1 et rendrait un résultat nul ininterprétable. |
+| `reasoning_effort` | **minimal** | Voir ci-dessous. |
+
+**Le niveau de réflexion est un confondant à part entière**, apparu depuis que les quatre familles l'exposent comme réglage. « Capacité de réflexion normale » n'est plus une propriété du modèle, c'est un paramètre, et les défauts diffèrent entre fournisseurs. Laisser les défauts reviendrait à comparer trois modèles à trois budgets de raisonnement différents.
+
+**Choix retenu : minimal, uniformément.** L'étude porte sur ce que le modèle produit sous une consigne, pas sur ce qu'il produit après délibération. Un raisonnement étendu lui permettrait de remarquer que la consigne dérive et de se corriger, ce qui est une question intéressante mais différente, et dont la disponibilité varie selon les familles.
+
+**Ce choix est discutable et il est déclaré comme tel.** Un utilisateur qui colle un profil dans une interface grand public reçoit de plus en plus souvent un modèle qui raisonne. Le réglage minimal n'est donc pas plus écologiquement valide que le défaut, il est seulement comparable.
+
+**Contrôle de robustesse préenregistré.** Une condition unique, C3, sur un seul générateur, est rejouée à effort de raisonnement élevé, sur un sous-échantillon. Objectif : vérifier que la direction de l'effet tient. Coût marginal. Si la direction s'inverse, c'est un résultat à part entière et il sera rapporté comme tel.
 
 **Générateurs retenus** : Anthropic (Opus 5), OpenAI, Mistral. Identifiants exacts et dates de version à figer avant la première génération. Les résultats sont attachés à ces versions et le rapport doit le dire.
 
@@ -483,7 +499,6 @@ Ce qui ne l'a pas été : la taxonomie elle-même, qui provient de la littératu
 
 - [ ] **Trois vérifications éliminatoires sur le palier OpenAI**, section 3.6.1 : épinglage de version, réglage des paramètres d'échantillonnage, plafond quotidien de tokens
 - [ ] Vérifier si le palier gratuit Mistral implique un partage de données, et le déclarer le cas échéant
-- [ ] Température, top_p et **niveau de réflexion**, identiques pour les trois générateurs. Ce dernier paramètre est un confondant à part entière depuis que les quatre familles l'exposent comme réglage
 - [ ] Identité des trois modèles constructeurs du corpus, disjoints des générateurs
 - [ ] Rédaction des cinq consignes en anglais, puis traduction et rétrotraduction
 - [ ] Dépôt du préenregistrement sur l'Open Science Framework, pour disposer d'un horodatage vérifiable par un tiers plutôt que d'une date de fichier
@@ -518,6 +533,12 @@ Angle à conserver pour ce travail ultérieur, parce qu'il est neuf : Fan et al.
 - [x] **Consignes** : rédaction en anglais, traduction, rétrotraduction par un traducteur n'ayant pas vu l'original.
 - [x] **Sorties brutes** : jeu codé en accès ouvert, textes bruts sur demande motivée à l'auteur, sans accord d'usage écrit.
 - [x] **Conflit d'intérêts** : déclaré en section 10.1.
+
+### Tranché le 30 juillet 2026, suite
+
+- [x] **Identifiants de modèles vérifiés existants** sur les comptes de production : `claude-opus-5`, `gpt-5.6-terra`, `mistral-medium-3-5`, `gemma4:12b` en local.
+- [x] **Paramètres d'échantillonnage figés** : température 1.0, top_p 1.0, effort de raisonnement minimal, identiques pour les trois générateurs. Justifications en section 3.6.
+- [x] **Contrôle de robustesse** sur l'effort de raisonnement ajouté au plan.
 
 ### Tranché le 30 juillet 2026
 
