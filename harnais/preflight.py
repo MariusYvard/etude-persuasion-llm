@@ -105,7 +105,7 @@ CONTROLES = [
     ),
 ]
 
-# Parametres qui doivent etre identiques pour les quatre generateurs.
+# Parametres qui doivent etre identiques pour les cinq generateurs.
 # Un ecart ici confond effet de famille et effet de decodage.
 PARAMS_PARTAGES = ["GEN_TEMPERATURE", "GEN_TOP_P", "GEN_REASONING_EFFORT"]
 
@@ -126,7 +126,46 @@ CIBLES = [
     ("GEN_MODEL_ALIBABA", "Alibaba", "ALIBABA_API_KEY",
      "$ALIBABA_BASE_URL/models",
      lambda k: {"Authorization": f"Bearer {k}"}),
+    # Cinquieme generateur servi par NVIDIA et non par son editeur.
+    ("GEN_MODEL_MOONSHOT", "NVIDIA", "NVIDIA_API_KEY",
+     "https://integrate.api.nvidia.com/v1/models",
+     lambda k: {"Authorization": f"Bearer {k}"}),
 ]
+
+# Sondes d'echantillonnage. Le preflight verifiait que les valeurs sont figees
+# au .env, pas qu'un fournisseur les accepte. Un fournisseur qui ignore
+# silencieusement temperature ou top_p ferait tomber le critere 3 sans alerte.
+#
+# Test retenu, comportemental plutot que declaratif : plusieurs tirages a
+# temperature 0 puis a la temperature de production. Si le nombre de sorties
+# distinctes n'augmente pas, le parametre n'est pas honore.
+SONDE_PROMPT = "Invente un mot qui n'existe pas. Reponds par ce seul mot."
+SONDE_TIRAGES = 4
+
+
+def _post(url: str, entetes: dict, charge: dict) -> str:
+    corps = json.dumps(charge).encode("utf-8")
+    entetes = dict(entetes)
+    entetes["Content-Type"] = "application/json"
+    requete = urllib.request.Request(url, data=corps, headers=entetes, method="POST")
+    with urllib.request.urlopen(requete, timeout=60) as reponse:
+        rep = json.loads(reponse.read().decode("utf-8"))
+    if "content" in rep:  # forme Anthropic
+        return "".join(b.get("text", "") for b in rep["content"]).strip()
+    return rep["choices"][0]["message"]["content"].strip()
+
+
+def sonde(nom: str, url: str, entetes: dict, modele: str, temp: float) -> set:
+    """Retourne l'ensemble des sorties distinctes sur SONDE_TIRAGES appels."""
+    anthropic = "anthropic.com" in url
+    sorties = set()
+    for _ in range(SONDE_TIRAGES):
+        charge = {"model": modele, "max_tokens": 12, "temperature": temp,
+                  "messages": [{"role": "user", "content": SONDE_PROMPT}]}
+        if not anthropic:
+            charge["top_p"] = 1.0
+        sorties.add(_post(url, entetes, charge))
+    return sorties
 
 
 def identifiants(url: str, entetes: dict) -> list:
@@ -144,6 +183,7 @@ GENERATEURS_ATTENDUS = [
     "GEN_MODEL_OPENAI",
     "GEN_MODEL_MISTRAL",
     "GEN_MODEL_ALIBABA",
+    "GEN_MODEL_MOONSHOT",
 ]
 
 # Lignee du modele de base, pas simple prefixe d'editeur.
@@ -302,7 +342,7 @@ def main() -> int:
     else:
         print(f"  {JAUNE}o{RAZ} {GRIS}controle impossible, juges ou constructeurs non renseignes{RAZ}")
 
-    print("\nParametres d'echantillonnage, identiques pour les quatre generateurs")
+    print("\nParametres d'echantillonnage, identiques pour les cinq generateurs")
     for var in PARAMS_PARTAGES:
         val = env.get(var, "")
         marque = f"{VERT}v{RAZ}" if val else f"{JAUNE}o{RAZ}"
@@ -310,6 +350,46 @@ def main() -> int:
         print(f"  {marque} {var:<22} {GRIS}{affichage}{RAZ}")
         if not val:
             echecs += 1
+
+    if "--echo" in sys.argv:
+        print("\nEcho des parametres, les fournisseurs les acceptent-ils vraiment")
+        base_ali = env.get("ALIBABA_BASE_URL", "").rstrip("/")
+        cibles = [
+            ("Anthropic", "https://api.anthropic.com/v1/messages",
+             {"x-api-key": env.get("ANTHROPIC_API_KEY", ""),
+              "anthropic-version": "2023-06-01"}, env.get("GEN_MODEL_ANTHROPIC", "")),
+            ("OpenAI", "https://api.openai.com/v1/chat/completions",
+             {"Authorization": "Bearer " + env.get("OPENAI_API_KEY", "")},
+             env.get("GEN_MODEL_OPENAI", "")),
+            ("Mistral", "https://api.mistral.ai/v1/chat/completions",
+             {"Authorization": "Bearer " + env.get("MISTRAL_API_KEY", "")},
+             env.get("GEN_MODEL_MISTRAL", "")),
+            ("Alibaba", base_ali + "/chat/completions",
+             {"Authorization": "Bearer " + env.get("ALIBABA_API_KEY", "")},
+             env.get("GEN_MODEL_ALIBABA", "")),
+            ("Moonshot", "https://integrate.api.nvidia.com/v1/chat/completions",
+             {"Authorization": "Bearer " + env.get("NVIDIA_API_KEY", "")},
+             env.get("GEN_MODEL_MOONSHOT", "")),
+        ]
+        chaud = float(env.get("GEN_TEMPERATURE", "1.0"))
+        for nom, url, entetes, modele in cibles:
+            if not modele:
+                print(f"  {JAUNE}o{RAZ} {nom:<10} {GRIS}identifiant absent{RAZ}")
+                echecs += 1
+                continue
+            try:
+                froid = sonde(nom, url, entetes, modele, 0.0)
+                vif = sonde(nom, url, entetes, modele, chaud)
+            except Exception as err:
+                print(f"  {JAUNE}o{RAZ} {nom:<10} {GRIS}sonde impossible, {type(err).__name__}{RAZ}")
+                continue
+            detail = f"{len(froid)} sortie(s) distincte(s) a t=0, {len(vif)} a t={chaud}"
+            if len(vif) > len(froid):
+                print(f"  {VERT}v{RAZ} {nom:<10} {GRIS}{detail}{RAZ}")
+            else:
+                print(f"  {ROUGE}x{RAZ} {nom:<10} {GRIS}{detail}{RAZ}")
+                print(f"    {GRIS}la temperature ne change rien, parametre vraisemblablement ignore{RAZ}")
+                echecs += 1
 
     print()
     if echecs:

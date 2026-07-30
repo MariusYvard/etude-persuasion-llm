@@ -1,4 +1,4 @@
-# Secrets, jamais commités
+# Secrets, jamais commit??s
 .env
 .env.*
 !.env.example
@@ -6,7 +6,7 @@
 *_api_key*
 credentials.json
 
-# Sorties brutes, non publiées ouvertement (préenregistrement section 9)
+# Sorties brutes, non publi??es ouvertement (pr??enregistrement section 9)
 resultats/brut/
 resultats/**/*.raw.jsonl
 corpus/genere/
@@ -19,9 +19,13 @@ __pycache__/
 .ipynb_checkpoints/
 node_modules/
 
-# Système
+# Syst??me
 .DS_Store
 Thumbs.db
 
 # Dossier de candidature, prive : contient une adresse e-mail et des notes de strategie
 candidature/
+
+# Sorties de sonde, locales
+echo_params.*
+harnais/_*.py

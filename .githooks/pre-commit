@@ -1,0 +1,33 @@
+#!/bin/sh
+# Crochet de pre-commit du depot. Deux controles, tous deux bloquants.
+#   1. aucun secret ni adresse e-mail dans l'index
+#   2. aucun tiret cadratin ni demi-cadratin dans les fichiers Markdown
+#
+# Installation : git config core.hooksPath .githooks
+# Contournement ponctuel et assume : git commit --no-verify
+
+fautes=0
+
+# Le crochet s'exclut lui-meme du balayage : il contient les motifs qu'il cherche.
+secrets=$(git diff --cached -- . ':(exclude).githooks/' | grep -nE 'sk-proj-|sk-ant-|nvapi-|gho_|AIza|AQ\.Ab8|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' | head -5)
+if [ -n "$secrets" ]; then
+  echo "PRE-COMMIT : motif sensible detecte dans l'index"
+  echo "$secrets"
+  fautes=1
+fi
+
+md=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$')
+if [ -n "$md" ]; then
+  tirets=$(git grep --cached -nE "$(printf '\xe2\x80\x94|\xe2\x80\x93')" -- $md | head -5)
+  if [ -n "$tirets" ]; then
+    echo "PRE-COMMIT : tiret cadratin ou demi-cadratin, proscrits par la charte"
+    echo "$tirets"
+    fautes=1
+  fi
+fi
+
+if [ "$fautes" -ne 0 ]; then
+  echo "Commit refuse."
+  exit 1
+fi
+exit 0
