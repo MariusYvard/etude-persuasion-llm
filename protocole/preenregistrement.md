@@ -2,7 +2,7 @@
 
 **Statut : brouillon, non figé.** Ce document doit être horodaté et versionné dans le dépôt **avant la première génération**. Toute modification postérieure à la première génération est un amendement, à signaler comme tel dans la publication.
 
-Version 1.2, 30 juillet 2026.
+Version 1.4, 30 juillet 2026.
 
 ## 1. Objet
 
@@ -78,8 +78,10 @@ Motif. Le risque n'est pas la maladresse de traduction, c'est qu'une consigne ne
 ### 3.4 Volume
 
 560 personas × 5 conditions × 3 tirages = **8 400 messages par modèle**.
-3 modèles de familles différentes = **25 200 messages**.
-3 juges indépendants par message = **75 600 notations**.
+4 modèles de familles différentes = **33 600 messages**.
+3 juges indépendants par message = **100 800 notations**.
+
+**La charge de notation par générateur ne dépend pas du nombre de générateurs.** Chaque message reçoit un juge J1 tiré parmi les générateurs non émetteurs, donc le total des notations J1 vaut 8 400 × G et se répartit sur G générateurs, soit 8 400 chacun quel que soit G. Passer de trois à quatre générateurs ne change donc rien à la facture Anthropic. Le surcoût est entièrement porté par le quatrième fournisseur et par 16 800 appels NVIDIA supplémentaires, gratuits.
 
 **Le coût dominant est la notation, pas la génération.** Routage : génération par les modèles sous test, qui sont l'objet d'étude et ne peuvent pas être substitués ; notation par une pile séparée, sur modèles à poids ouverts servis par API.
 
@@ -101,15 +103,20 @@ Unité d'analyse : le message. Modèle mixte, persona en effet aléatoire.
 
 Le contraste 4 est ajouté par la scission de l'Europe. Il teste directement si la variation intra-européenne documentée sur l'âge de décohabitation (9,6 ans d'écart) et sur la stigmatisation se traduit par une différence mesurable de transposition.
 
+**Contraste 5, déclaré exploratoire, ajouté le 30 juillet 2026 avec le quatrième générateur.** Corrélation de rang de Spearman entre l'ordonnancement des sept zones produit par le générateur chinois et l'ordonnancement moyen des trois générateurs occidentaux, en condition C3. Il porte sur le **rang** des zones, pas sur le niveau d'erreur, parce que les niveaux absolus sont confondus avec la compétence multilingue du modèle alors que l'ordonnancement ne l'est pas.
+
+Motif détaillé en section 3.6.2. Ce contraste est exploratoire et le restera : une seule famille par provenance interdit toute généralisation à « les modèles chinois ».
+
 Toute autre comparaison est exploratoire et sera étiquetée comme telle.
 
 ### 3.6 Modèles testés et pile de notation
 
-**Trois critères de sélection, plus contraignants que l'identité des modèles.**
+**Quatre critères de sélection, plus contraignants que l'identité des modèles.**
 
-1. **Trois familles distinctes**, c'est-à-dire trois lignées de préentraînement et d'alignement différentes. Trois versions d'une même lignée mesureraient les manies de cette lignée, pas un phénomène général.
+1. **Quatre familles distinctes**, c'est-à-dire quatre lignées de préentraînement et d'alignement différentes. Quatre versions d'une même lignée mesureraient les manies de cette lignée, pas un phénomène général.
 2. **Au moins un modèle à poids ouverts exécutable en local.** Seul composant qui restera reproductible quand les modèles propriétaires auront été dépréciés, et seul dont la version puisse être épinglée exactement.
-3. **Paramètres d'échantillonnage identiques pour les trois**, figés et préenregistrés. Sans cela, effet de modèle et effet de décodage sont confondus.
+3. **Paramètres d'échantillonnage identiques pour les quatre**, figés et préenregistrés. Sans cela, effet de modèle et effet de décodage sont confondus.
+4. **Au moins deux provenances d'alignement.** Critère ajouté le 30 juillet 2026. Motif en section 3.6.2.
 
 **Valeurs figées le 30 juillet 2026, avec leur justification.**
 
@@ -127,50 +134,78 @@ Toute autre comparaison est exploratoire et sera étiquetée comme telle.
 
 **Contrôle de robustesse préenregistré.** Une condition unique, C3, sur un seul générateur, est rejouée à effort de raisonnement élevé, sur un sous-échantillon. Objectif : vérifier que la direction de l'effet tient. Coût marginal. Si la direction s'inverse, c'est un résultat à part entière et il sera rapporté comme tel.
 
-**Générateurs retenus** : Anthropic (Opus 5), OpenAI, Mistral. Identifiants exacts et dates de version à figer avant la première génération. Les résultats sont attachés à ces versions et le rapport doit le dire.
+**Générateurs retenus** : Anthropic (`claude-opus-5`), OpenAI (`gpt-5.6-terra`), Mistral (`mistral-medium-3-5`), Alibaba (`qwen3.5-plus`). Les résultats sont attachés à ces versions et le rapport doit le dire. Le quatrième est ajouté le 30 juillet 2026, motif en section 3.6.2.
 
-**Pile de notation : aucun générateur ne juge.** Décision du 30 juillet 2026, permise par l'accès NVIDIA.
+**Pile de notation : panel mixte à provenance équilibrée.** Version du 30 juillet 2026, après deux corrections successives.
 
-La version précédente faisait juger chaque message par deux générateurs plus une quatrième famille, avec exclusion de la famille émettrice. Ce schéma est abandonné au profit d'un plus simple : **les trois juges sont des modèles à poids ouverts servis par NVIDIA, distincts des trois générateurs.**
+### Ce qui a été écarté, et pourquoi
 
-Trois avantages, aucun inconvénient identifié.
+**Schéma 1, générateurs juges avec exclusion de l'émetteur.** Chaque message noté par les deux générateurs non émetteurs plus une quatrième famille. Écarté pour le coût, puis partiellement réhabilité, voir plus bas.
 
-1. **Plus aucune comptabilité d'exclusion.** La contrainte « un modèle ne note jamais ses propres sorties » est satisfaite structurellement, pas par un aiguillage message par message.
-2. **La notation ne coûte rien**, palier gratuit NVIDIA. Les crédits Anthropic, OpenAI et Mistral vont intégralement à la génération, soit environ 46 dollars côté Anthropic au lieu de 230.
-3. **Diversité de lignées accrue**, ce qui réduit le risque qu'un angle mort d'une seule lignée passe inaperçu.
+**Schéma 2, aucun générateur ne juge, trois juges à poids ouverts.** Écarté pour une raison qui n'apparaît qu'en regardant la provenance des modèles disponibles. Sur les six candidats initialement retenus, quatre étaient chinois : DeepSeek, Kimi (Moonshot), GLM (Zhipu) et MiniMax. Le pilote sélectionnant les trois meilleurs sur la performance multilingue, il aurait vraisemblablement retenu un panel entièrement chinois.
 
-Contrainte de débit : 75 600 notations à environ 40 requêtes par minute, soit à peu près 31 heures. Un week-end, sans surveillance.
+**Pourquoi c'est disqualifiant ici précisément.** H3 mesure si les modèles transposent des scripts anglo-américains hors contexte. **Mesurer un biais culturel avec un instrument culturellement homogène confond ce qui est mesuré avec la position d'où l'on mesure.** Un panel d'une seule provenance n'a pas les mêmes angles morts sur les normes latino-américaines, grecques ou philippines qu'un panel d'une autre, et cet écart se lirait comme un effet de zone.
 
-**Six candidats juges, trois retenus.** Le pilote les départage sur l'accord avec le codage humain, stratifié par langue.
+### Schéma retenu
 
-| | Candidat | Lignée |
+**Trois juges par message, de provenances délibérément contrastées.**
+
+| Rang | Origine | Sélection | Provenance |
+|---|---|---|---|
+| J1 | Générateur non émetteur | Tiré parmi les trois générateurs qui n'ont pas produit le message | États-Unis, France ou Chine |
+| J2 | Poids ouverts | `meta/llama-3.3-70b-instruct` | États-Unis |
+| J3 | Poids ouverts | `deepseek-ai/deepseek-v4-pro` | Chine |
+
+Chaque message est donc noté par au moins deux provenances différentes, et le plus souvent trois.
+
+**Pourquoi réintroduire un générateur comme juge.** Trois raisons.
+
+1. **Qualité de l'instrument.** La grille comporte onze codes plus deux canaux de transposition, appliqués à quatorze langues. C'est une tâche exigeante et les modèles de frontière y sont meilleurs.
+2. **Équilibre de provenance.** Le vivier à poids ouverts penche vers la Chine. Les générateurs apportent trois provenances d'alignement (États-Unis, France, Chine) et corrigent ce déséquilibre par construction.
+3. **Coût nul ou presque.** Mistral tourne sur son palier gratuit et OpenAI sur ses tokens complémentaires. La part Anthropic représente environ 8 400 notations, soit à peu près 60 dollars, montant invariant par rapport au nombre de générateurs (section 3.4).
+
+**Contrainte de symétrie, impérative.** J1 est tiré parmi les **trois** générateurs non émetteurs, jamais parmi un sous-ensemble. Réserver Anthropic à la génération pour économiser des crédits créerait une asymétrie : les sorties d'Anthropic seraient jugées par OpenAI et Mistral, tandis que celles d'OpenAI ne seraient jamais jugées par Anthropic. Si l'identité du juge influe sur la note, chaque générateur affronterait une composition de jury différente, **ce qui confondrait l'effet de générateur avec l'effet de jury**. Or la comparaison entre générateurs fait partie de l'étude.
+
+**Ce que l'exclusion de l'émetteur ne règle pas, et qui doit être rapporté.** Exclure la famille émettrice traite la préférence pour soi. Elle ne traite pas l'affinité stylistique entre modèles de frontière, qui partagent des sources de données et des techniques d'alignement voisines et convergent en comportement. C'est précisément pourquoi J1 n'est qu'un juge sur trois, les deux autres étant indépendants.
+
+**Diagnostic préenregistré.** L'accord entre J1 et les deux juges à poids ouverts est calculé et rapporté séparément, code par code. **Un désaccord systématique entre le juge de frontière et les juges indépendants est un résultat en soi**, et il devra figurer dans l'article plutôt que d'être moyenné dans un score de consensus.
+
+### Vivier de remplacement
+
+Quatre candidats supplémentaires restent au pilote, mobilisables si J2 ou J3 échoue le seuil d'accord sur une part significative des langues. **Toute substitution doit préserver l'équilibre de provenance**, un remplaçant chinois ne pouvant se substituer qu'à J3.
+
+| Candidat | Lignée | Provenance |
 |---|---|---|
-| 1 | `deepseek-ai/deepseek-v4-pro` | deepseek |
-| 2 | `moonshotai/kimi-k2.6` | kimi |
-| 3 | `z-ai/glm-5.2` | glm |
-| 4 | `meta/llama-3.3-70b-instruct` | llama |
-| 5 | `nvidia/nemotron-3-super-120b-a12b` | nemotron |
-| 6 | `minimaxai/minimax-m3` | minimax |
+| `nvidia/nemotron-3-super-120b-a12b` | nemotron | États-Unis |
+| `microsoft/phi-3.5-moe-instruct` | phi | États-Unis |
+| `moonshotai/kimi-k2.6` | kimi | Chine |
+| `z-ai/glm-5.2` | glm | Chine |
 
-Trois de ces lignées sont d'origine chinoise (kimi, glm, minimax), retenues délibérément pour la couverture CJK dont l'étude a besoin en japonais et en coréen.
+**La provenance des juges est déclarée dans l'article comme une caractéristique de l'instrument**, au même titre que leur taille et leur version.
 
-**Panel unique et non panels par langue, décision motivée.** Il serait tentant de composer un panel différent par langue, en confiant le CJK aux lignées chinoises et l'Asie du Sud-Est à un modèle spécialisé. C'est écarté pour le volet confirmatoire : **si les zones sont jugées par des instruments différents, un écart entre zones devient indistinguable d'un écart entre panels, et le contraste planifié n°3 qui porte H3 s'effondre.**
+### Panel unique, et non panels par langue
 
-Le panel retenu est donc unique pour les quatorze langues. L'accord est rapporté langue par langue, et **les langues sous le seuil sortent du volet confirmatoire** plutôt que d'être confiées à un autre panel.
+Il serait tentant de composer un panel différent par langue, en confiant le CJK aux lignées chinoises et l'Asie du Sud-Est à un modèle spécialisé. C'est écarté pour le volet confirmatoire : **si les zones sont jugées par des instruments différents, un écart entre zones devient indistinguable d'un écart entre panels, et le contraste planifié n°3 qui porte H3 s'effondre.**
 
-**Juges** : modèles à poids ouverts servis par API, versions épinglées. Trois motifs convergents. Le coût se concentre là, environ 38 millions de tokens en entrée et 15 millions en sortie pour les 75 600 notations, contre à peu près un quart de ce volume pour la génération. C'est le composant qui garantit la reproductibilité à long terme. Et il satisfait le critère 2 si les trois générateurs sont tous appelés par API.
+Le panel est donc unique pour les quatorze langues. L'accord est rapporté langue par langue, et **les langues sous le seuil sortent du volet confirmatoire** plutôt que d'être confiées à un autre panel.
+
+### Volume
+
+100 800 notations au total. Environ 67 200 sur le vivier NVIDIA, soit à peu près 28 heures à 40 requêtes par minute, et 33 600 réparties sur les quatre générateurs, à raison de 8 400 chacun.
+
+**Juges** : modèles à poids ouverts servis par API, versions épinglées. Trois motifs convergents. Le coût se concentre là, environ 50 millions de tokens en entrée et 20 millions en sortie pour les 100 800 notations, contre à peu près un quart de ce volume pour la génération. C'est le composant qui garantit la reproductibilité à long terme. Et il satisfait le critère 2 si les quatre générateurs sont tous appelés par API.
 
 **Exécution retenue : modèle à poids ouverts servi par API, via NVIDIA NIM** (`https://integrate.api.nvidia.com/v1`, compatible OpenAI, palier gratuit à environ 40 requêtes par minute).
 
-**Correction du 30 juillet 2026, l'exécution locale est abandonnée.** La version précédente prévoyait `gemma4:12b` sur le poste de production. C'était une erreur de dimensionnement de ma part : la notation traite **75 600 appels**, soit un tiers du volume total et environ cinquante fois le volume de construction du corpus. Si une machine ne tient pas la construction du corpus, elle ne tient a fortiori pas la notation.
+**Correction du 30 juillet 2026, l'exécution locale est abandonnée.** La version précédente prévoyait `gemma4:12b` sur le poste de production. C'était une erreur de dimensionnement de ma part : la notation traite **100 800 appels**, soit trois quarts du volume total et environ cinquante fois le volume de construction du corpus. Si une machine ne tient pas la construction du corpus, elle ne tient a fortiori pas la notation.
 
 **Le critère 2 est préservé.** Un modèle à poids ouverts servi par API reste un modèle à poids ouverts : sa version s'épingle, ses poids sont publics, et n'importe qui peut refaire tourner l'étude sans dépendre du même hébergeur. La reproductibilité à long terme est portée par les poids, pas par le lieu d'exécution.
 
-**Volume et calendrier.** 25 200 notations à 40 requêtes par minute, soit environ dix heures. Une nuit.
+**Volume et calendrier.** 67 200 notations sur le vivier NVIDIA à 40 requêtes par minute, soit environ 28 heures. Deux nuits.
 
 **Le choix du modèle se fait après la validation stratifiée par langue, pas avant.** Le corpus couvre quatorze langues et un juge peut tenir en anglais puis céder sur le registre japonais ou l'alternance codique indonésienne. Le catalogue NVIDIA expose plusieurs familles utilisables (Meta, Alibaba, DeepSeek, Microsoft, NVIDIA), ce qui laisse de quoi basculer si le premier candidat échoue.
 
-**Contrainte de disjonction, à ne pas relâcher.** Chaque juge doit être de lignée distincte d'Anthropic, d'OpenAI et de Mistral. Le préflight le contrôle automatiquement.
+**Contrainte de disjonction, à ne pas relâcher.** Chaque juge doit être de lignée distincte des quatre générateurs. Elle mord immédiatement avec l'entrée d'un générateur chinois : `deepseek-v4-pro` occupe déjà le siège J3, ce qui **interdit de prendre DeepSeek comme quatrième générateur**, et les lignées `yi` et `step` sont déjà constructeurs du corpus. Le préflight le contrôle automatiquement.
 
 **Ollama local reste installé mais hors protocole**, réservé aux essais rapides. Le pilote tourne sur la pile de notation de production : le faire tourner sur un autre juge invaliderait la sélection de configuration que le pilote est précisément chargé d'opérer.
 
@@ -186,18 +221,19 @@ C'est la contrainte la plus exigeante de tout le dispositif de notation. La gril
 
 **Escalade prévue.** Si le panel de juges échoue le seuil sur un sous-ensemble de langues, deux options préenregistrées, dans cet ordre : basculer ces langues seules vers un juge payant, ou retirer les codes concernés de l'analyse primaire pour ces langues. **Le choix entre les deux est fait avant de voir les résultats de l'étude, sur la seule base des scores d'accord du pilote.**
 
-**Modèles constructeurs du corpus.** L'étage d'échelle est produit par **cinq modèles constructeurs disjoints des trois modèles testés**. Motif en section 6. Cette disjonction est impérative : générer le corpus avec un modèle testé contaminerait l'objet d'étude avec sa propre production.
+**Modèles constructeurs du corpus.** L'étage d'échelle est produit par **cinq modèles constructeurs disjoints des quatre modèles testés**. Motif en section 6. Cette disjonction est impérative : générer le corpus avec un modèle testé contaminerait l'objet d'étude avec sa propre production.
 
 ### 3.6.1 Paliers d'accès et partage de données, à déclarer
 
-Les trois générateurs ne sont pas appelés dans des conditions commerciales identiques, et cela doit figurer dans la publication.
+Les quatre générateurs ne sont pas appelés dans des conditions commerciales identiques, et cela doit figurer dans la publication.
 
 | Famille | Palier d'accès | Partage des entrées et sorties avec le fournisseur |
 |---|---|---|
 | Anthropic | Crédits API standards ou programme de recherche | Non |
 | Mistral | Palier gratuit Free Experiment | Non documenté, à vérifier avant la production |
 | **OpenAI** | **Tokens complémentaires en échange de partage de données** | **Oui, assumé** |
-| Google, panel de juges | Palier payant | Non |
+| Alibaba | Palier payant, Model Studio en mode international | À vérifier avant la production |
+| Panel de juges | Palier gratuit NVIDIA NIM | À vérifier avant la production |
 
 **Le palier OpenAI retenu implique que les prompts et les sorties de cette condition sont transmis au fournisseur et susceptibles d'entrer dans ses jeux d'entraînement.** Décision prise en connaissance de cause pour raison budgétaire.
 
@@ -210,6 +246,34 @@ Les trois générateurs ne sont pas appelés dans des conditions commerciales id
 1. **Épinglage de version.** Le palier complémentaire doit permettre de spécifier `gpt-5.6-terra` exactement. Sans épinglage, la condition OpenAI sort de l'étude.
 2. **Paramètres d'échantillonnage.** Température, top_p et niveau de réflexion doivent être réglables à l'identique des autres familles. Sans cela, effet de famille et effet de décodage sont confondus.
 3. **Volume quotidien disponible.** L'usage OpenAI total avoisine 30 millions de tokens entre génération et notation. Le plafond journalier du palier détermine le calendrier de production et doit être relevé dans la console avant de planifier.
+
+### 3.6.2 Quatrième générateur, provenance d'alignement non occidentale
+
+Décision du 30 juillet 2026. Le plan à trois générateurs comportait Anthropic, OpenAI et Mistral, soit deux alignements américains et un européen. Un quatrième générateur chinois est ajouté.
+
+**Ce que l'ajout corrige.** Avec trois générateurs occidentaux, un résultat positif sur H3 admet deux explications rivales qu'aucune donnée du plan ne sépare.
+
+*Explication A, provenance d'alignement.* La transposition reflète l'origine des données de préférence et des procédures d'alignement. Les modèles alignés sur des jugements anglo-américains exportent des normes anglo-américaines.
+
+*Explication B, corpus de conseil.* La transposition reflète la domination anglophone du corpus de conseil en séduction disponible en ligne, documentée en section source 04. Tout modèle entraîné sur le web l'hérite, quelle que soit sa provenance d'alignement.
+
+Les deux produisent la même prédiction sur trois générateurs occidentaux. Elles divergent sur un générateur chinois. Si son ordonnancement des zones reproduit celui des trois autres, B l'emporte et la conclusion porte sur le corpus d'entraînement, ce qui est une affirmation nettement plus générale et plus difficile à corriger. Si son ordonnancement diffère, en particulier si l'Asie de l'Est passe du haut vers le bas du classement, A l'emporte et la conclusion devient « les modèles exportent leurs normes d'origine » plutôt que « les modèles exportent des normes anglo-américaines ».
+
+**Pourquoi le contraste porte sur le rang et non sur le niveau.** Le taux absolu d'erreur de transposition d'un modèle dépend de sa compétence multilingue, qui varie fortement entre familles et n'est pas ce que H3 mesure. L'ordonnancement des sept zones à l'intérieur d'un même générateur est immunisé contre ce facteur, puisque chaque générateur sert de son propre témoin.
+
+**Limite, à ne pas contourner.** Une famille par provenance ne permet pas d'énoncer quoi que ce soit sur « les modèles chinois ». Le contraste 5 compare quatre modèles nommés, pas deux populations. Il est déclaré exploratoire et le reste, même s'il ressort net. La même objection vaudrait d'ailleurs contre l'énoncé « les modèles occidentaux », qui repose ici sur trois familles seulement.
+
+**Absence de zone d'origine.** Le plan ne comporte pas de personas de Chine continentale, Tinder n'y étant pas opérable (section 4). Le générateur chinois n'a donc pas de zone où mesurer sa performance à domicile, ce qui affaiblit la prédiction de l'explication A. La zone la plus proche est la sous-zone taïwanaise, 20 personas en chinois traditionnel.
+
+**Sensibilité préenregistrée sur Taïwan.** Le contraste 5 est calculé deux fois, avec et sans la sous-zone taïwanaise. Motif : l'alignement d'un modèle continental peut traiter les contenus relatifs à Taïwan différemment de ses autres contenus, ce qui produirait sur ces 20 personas un écart d'une nature étrangère à H3. Un écart entre les deux calculs est rapporté tel quel et non arbitré.
+
+**Modèle retenu, `qwen3.5-plus` d'Alibaba**, appelé sur le point d'accès Model Studio en mode international, compatible OpenAI. Palier de capacité intermédiaire, comparable aux trois autres générateurs selon le critère « capacité de réflexion normale » retenu en section 3.6.
+
+**Deux candidats écartés, pour un motif technique et non de qualité.** DeepSeek occupe déjà le siège J3 du panel de notation, l'y ajouter comme générateur violerait la règle selon laquelle un modèle ne note jamais les sorties de sa propre lignée. Les lignées `yi` et `step` construisent l'étage d'échelle du corpus, un générateur de ces lignées serait évalué sur des personas écrits par lui-même. Il ne restait donc qu'un vivier réduit, et Qwen en est le membre de palier adéquat.
+
+**Coût marginal, environ 20 dollars.** La notation ne bouge pas, la charge J1 par générateur restant à 8 400 quel que soit leur nombre (section 3.4). Le supplément se limite à 8 400 générations et 8 400 notations sur l'API d'Alibaba, plus 16 800 appels NVIDIA gratuits qui allongent la production de sept heures.
+
+**Effet sur la lecture d'un résultat nul en H1.** Si les quatre familles produisent la même dérive, l'affirmation « l'alignement ne couvre pas ce cas » cesse de porter sur un régime d'alignement unique. Elle couvre deux régimes construits sous des contraintes réglementaires et des jeux de préférence différents, ce qui la rend plus difficile à imputer à une lacune particulière d'un fournisseur.
 
 ### 3.7 Pilote, obligatoire avant production
 
@@ -539,11 +603,17 @@ Ce qui ne l'a pas été : la taxonomie elle-même, qui provient de la littératu
 
 9. **La condition OpenAI a été produite sur un palier d'accès à partage de données.** Les prompts et les sorties de cette condition ont été transmis au fournisseur et sont susceptibles d'avoir rejoint ses jeux d'entraînement. La validité interne n'en est pas affectée, le partage étant postérieur à la mesure. **En revanche, une réplication de cette étude sur un modèle OpenAI ne peut pas prétendre au même degré de nouveauté que sur les trois autres familles.** Les trois autres conditions n'ont pas été partagées. Détail en section 3.6.1.
 
+10. **Une seule famille par provenance d'alignement.** Le contraste 5 oppose un générateur chinois à trois générateurs occidentaux. Il compare quatre modèles nommés et ne fonde aucune affirmation sur « les modèles chinois » ni sur « les modèles occidentaux ». Il est exploratoire par construction, et le demeure quelle que soit la netteté du résultat. Détail en section 3.6.2.
+
+11. **Le générateur chinois n'a pas de zone d'origine dans le plan.** Aucune persona de Chine continentale ne figure au corpus, Tinder n'y étant pas opérable. La prédiction de l'explication A en est affaiblie, et la sensibilité préenregistrée sur la sous-zone taïwanaise ne compense qu'en partie.
+
 ## 12. État des décisions
 
 ### Restant à faire avant de figer
 
 - [ ] **Trois vérifications éliminatoires sur le palier OpenAI**, section 3.6.1 : épinglage de version, réglage des paramètres d'échantillonnage, plafond quotidien de tokens
+- [ ] **Mêmes trois vérifications sur le palier Alibaba**, plus la question du partage de données, non documentée à ce jour
+- [ ] Clé API Alibaba Model Studio à créer et à porter au `.env`, en mode international
 - [ ] Vérifier si le palier gratuit Mistral implique un partage de données, et le déclarer le cas échéant
 - [ ] ~~Identité des modèles constructeurs~~ tranché le 30 juillet, cinq constructeurs figés
 - [ ] Rédaction des cinq consignes en anglais, puis traduction et rétrotraduction
@@ -572,7 +642,7 @@ Angle à conserver pour ce travail ultérieur, parce qu'il est neuf : Fan et al.
 - [x] **Zone Asie de l'Est** : 40 japonaises, 20 coréennes, 20 taïwanaises.
 - [x] **Portée de la restriction Corée et Taïwan** : limitée au canal registre. Incohérence de la version 0.4 corrigée.
 - [x] **Pilote obligatoire** sur 32 personas, trois critères éliminatoires, section 3.7.
-- [x] **Générateurs** : Anthropic (Opus 5), OpenAI, Mistral.
+- [x] **Générateurs** : Anthropic (Opus 5), OpenAI, Mistral. Quatrième générateur ajouté le 30 juillet, section 3.6.2.
 - [x] **Pile de notation** : quatre familles, exclusion de la famille génératrice message par message, panel de juges à poids ouverts en local.
 - [x] **Corpus produit par trois modèles constructeurs disjoints des générateurs**, section 6.
 - [x] **Contrôle anti-gabarit** : discrimination en aveugle comme critère d'acceptation, cosinus et trigrammes distincts comme pré-filtres.
@@ -589,11 +659,19 @@ Angle à conserver pour ce travail ultérieur, parce qu'il est neuf : Fan et al.
 ### Tranché le 30 juillet 2026
 
 - [x] **Générateurs, identifiants** : `claude-opus-5`, `gpt-5.6-terra`, `mistral-medium-3-5`. Tier intermédiaire chez les trois éditeurs. Mistral Medium 3.5 est à poids ouverts sous licence MIT modifiée, ce qui satisfait le critère de reproductibilité à l'intérieur du groupe des générateurs.
-- [x] **Juges** : modèle à poids ouverts servi par NVIDIA NIM. L'exécution locale, envisagée le 29 juillet, est abandonnée le 30 : 25 200 notations ne tiennent pas sur le poste de production. Le critère de reproductibilité est porté par les poids ouverts, pas par le lieu d'exécution. Choix du modèle après validation stratifiée par langue.
+- [x] **Juges** : modèle à poids ouverts servi par NVIDIA NIM. L'exécution locale, envisagée le 29 juillet, est abandonnée le 30 : 100 800 notations ne tiennent pas sur le poste de production. Le critère de reproductibilité est porté par les poids ouverts, pas par le lieu d'exécution. Choix du modèle après validation stratifiée par langue.
 - [x] **Palier OpenAI** : tokens complémentaires avec partage de données, choisi pour raison budgétaire. Conséquences déclarées en sections 3.6.1 et 11.9, vérifications éliminatoires à mener avant production.
 - [x] **Mistral** : palier gratuit Free Experiment, environ un milliard de tokens par mois. Contrainte de débit d'environ une requête par seconde, ce qui met la production Mistral à une nuit.
 - [x] **Paliers gratuits Gemini et partage de données Google** : écartés. Le plafond de 1 500 requêtes par jour mettrait la panel de juges à dix-sept jours, et les conditions d'usage autorisent l'entraînement sur les entrées.
 - [x] **Programme académique OpenAI de juillet 2026** : hors de portée. Affiliation institutionnelle requise, et il octroie un accès de type ChatGPT Pro et non des crédits API, donc inutilisable pour une étude à paramètres épinglés.
+
+### Tranché le 30 juillet 2026, panel et quatrième générateur
+
+- [x] **Panel de notation, correction d'un sous-comptage.** Sur six candidats juges, quatre étaient chinois et non trois. Le pilote sélectionnant les meilleurs sur la performance multilingue, un panel entièrement chinois était le résultat probable. Disqualifiant pour H3, motif en section 3.6.
+- [x] **Panel mixte à trois provenances** : un générateur non émetteur, un modèle à poids ouverts américain, un modèle à poids ouverts chinois. Contrainte de symétrie sur le tirage de J1, section 3.6.
+- [x] **Quatrième générateur, `qwen3.5-plus`.** Ajoute une provenance d'alignement non occidentale et sépare deux explications rivales de H3 que le plan à trois ne distinguait pas. Section 3.6.2.
+- [x] **DeepSeek écarté comme générateur** : lignée déjà employée au siège J3 du panel. Lignées `yi` et `step` écartées de même, déjà constructeurs du corpus.
+- [x] **Contraste 5 ajouté, exploratoire**, sur le rang des zones et non sur le niveau d'erreur, avec sensibilité préenregistrée sur la sous-zone taïwanaise.
 
 ### Tranché le 28 juillet 2026
 

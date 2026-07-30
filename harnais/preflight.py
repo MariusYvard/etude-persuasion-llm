@@ -88,6 +88,14 @@ CONTROLES = [
         ),
     ),
     (
+        "Alibaba",
+        "ALIBABA_API_KEY",
+        lambda k: appel(
+            os.environ.get("ALIBABA_BASE_URL", "").rstrip("/") + "/models",
+            {"Authorization": f"Bearer {k}"},
+        ),
+    ),
+    (
         "NVIDIA",
         "NVIDIA_API_KEY",
         lambda k: appel(
@@ -97,7 +105,7 @@ CONTROLES = [
     ),
 ]
 
-# Parametres qui doivent etre identiques pour les trois generateurs.
+# Parametres qui doivent etre identiques pour les quatre generateurs.
 # Un ecart ici confond effet de famille et effet de decodage.
 PARAMS_PARTAGES = ["GEN_TEMPERATURE", "GEN_TOP_P", "GEN_REASONING_EFFORT"]
 
@@ -112,6 +120,11 @@ CIBLES = [
      lambda k: {"Authorization": f"Bearer {k}"}),
     ("GEN_MODEL_MISTRAL", "Mistral", "MISTRAL_API_KEY",
      "https://api.mistral.ai/v1/models",
+     lambda k: {"Authorization": f"Bearer {k}"}),
+    # $ALIBABA_BASE_URL est resolu a l'usage, pas ici : CIBLES est construit
+    # avant que le .env ne soit charge dans os.environ.
+    ("GEN_MODEL_ALIBABA", "Alibaba", "ALIBABA_API_KEY",
+     "$ALIBABA_BASE_URL/models",
      lambda k: {"Authorization": f"Bearer {k}"}),
 ]
 
@@ -130,6 +143,7 @@ GENERATEURS_ATTENDUS = [
     "GEN_MODEL_ANTHROPIC",
     "GEN_MODEL_OPENAI",
     "GEN_MODEL_MISTRAL",
+    "GEN_MODEL_ALIBABA",
 ]
 
 # Lignee du modele de base, pas simple prefixe d'editeur.
@@ -141,6 +155,20 @@ GENERATEURS_ATTENDUS = [
 LIGNEES = ("llama", "mistral", "mixtral", "gemma", "phi", "qwen", "yi",
            "deepseek", "granite", "jamba", "dbrx", "palmyra", "nemotron",
            "kimi", "glm", "minimax", "step", "zamba", "sea-lion", "claude", "gpt")
+
+
+# Provenance d'alignement, pas de siege social de l'hebergeur. Sert deux
+# controles : le panel de juges ne peut pas etre monoculturel (H3 mesure un
+# biais culturel), et les generateurs doivent couvrir au moins deux provenances
+# faute de quoi le contraste 5 n'a pas de bras de comparaison.
+PROVENANCE = {
+    "deepseek": "CN", "kimi": "CN", "glm": "CN", "minimax": "CN",
+    "yi": "CN", "step": "CN", "qwen": "CN",
+    "llama": "US", "nemotron": "US", "phi": "US", "gemma": "US",
+    "dbrx": "US", "granite": "US", "palmyra": "US", "zamba": "US",
+    "jamba": "IL", "sea-lion": "SG",
+    "claude": "US", "gpt": "US", "mistral": "FR",
+}
 
 
 def lignee(ident: str) -> str:
@@ -180,7 +208,7 @@ def main() -> int:
             {"Authorization": "Bearer " + env["NVIDIA_API_KEY"]},
         )
 
-    dyn = sorted(k for k in env if k.startswith(("JUDGE_MODEL", "BUILDER_MODEL")))
+    dyn = sorted(k for k in env if k.startswith(("JUDGE_", "BUILDER_MODEL")))
     for var in GENERATEURS_ATTENDUS + dyn:
         val = env.get(var, "")
         if not val:
@@ -188,7 +216,7 @@ def main() -> int:
             echecs += 1
             continue
 
-        if var.startswith(("JUDGE_MODEL", "BUILDER_MODEL")):
+        if var.startswith(("JUDGE_", "BUILDER_MODEL")):
             if not cat_nvidia:
                 print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}{val}, catalogue NVIDIA illisible{RAZ}")
             elif val in cat_nvidia:
@@ -203,6 +231,8 @@ def main() -> int:
             print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}{RAZ}")
             continue
         _, nom, var_cle, url, entetes = cible
+        url = url.replace("$ALIBABA_BASE_URL",
+                          env.get("ALIBABA_BASE_URL", "").rstrip("/"))
         dispo = identifiants(url, entetes(env.get(var_cle, "")))
         if not dispo:
             print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}{val}, existence non verifiable{RAZ}")
@@ -214,15 +244,27 @@ def main() -> int:
 
     print("\nDisjonction des lignees")
     juges = [v for k, v in sorted(env.items())
-             if k.startswith("JUDGE_MODEL") and v]
+             if k.startswith("JUDGE_") and v]
     builders = [v for k, v in sorted(env.items())
                 if k.startswith("BUILDER_MODEL") and v]
-    generateurs = [env.get(k, "") for k in
-                   ("GEN_MODEL_ANTHROPIC", "GEN_MODEL_OPENAI", "GEN_MODEL_MISTRAL")]
+    generateurs = [env.get(k, "") for k in GENERATEURS_ATTENDUS]
     generateurs = [g for g in generateurs if g]
 
     lign_gen = {lignee(g) for g in generateurs}
     probleme = False
+
+    if len(lign_gen) < len(generateurs):
+        print(f"  {ROUGE}x{RAZ} deux generateurs partagent une lignee")
+        print(f"    {GRIS}le plan exige {len(generateurs)} familles distinctes{RAZ}")
+        probleme = True
+
+    prov_gen = {PROVENANCE.get(lignee(g), "?") for g in generateurs}
+    if len(prov_gen) < 2:
+        print(f"  {ROUGE}x{RAZ} generateurs de provenance unique : {', '.join(sorted(prov_gen))}")
+        print(f"    {GRIS}le contraste 5 n'a pas de bras de comparaison{RAZ}")
+        probleme = True
+    else:
+        print(f"  {VERT}v{RAZ} provenances des generateurs : {', '.join(sorted(prov_gen))}")
 
     for etiquette, groupe in (("juge", juges), ("constructeur", builders)):
         for m in groupe:
@@ -237,6 +279,19 @@ def main() -> int:
         print(f"    {GRIS}un juge validerait le realisme d'un texte ecrit par sa propre lignee{RAZ}")
         probleme = True
 
+    # Equilibre de provenance du panel. H3 mesure un biais culturel : un panel
+    # d'une seule provenance confondrait la mesure avec la position d'ou l'on mesure.
+    actifs = [env.get("JUDGE_MODEL_US", ""), env.get("JUDGE_MODEL_CN", "")]
+    actifs = [a for a in actifs if a]
+    if actifs:
+        prov = {PROVENANCE.get(lignee(a), "?") for a in actifs}
+        if len(prov) < 2:
+            print(f"  {ROUGE}x{RAZ} juges a poids ouverts de provenance unique : {', '.join(sorted(prov))}")
+            print(f"    {GRIS}H3 mesure un biais culturel, l'instrument ne peut pas etre monoculturel{RAZ}")
+            probleme = True
+        else:
+            print(f"  {VERT}v{RAZ} provenances des juges a poids ouverts : {', '.join(sorted(prov))}")
+
     if probleme:
         echecs += 1
     elif juges and builders:
@@ -247,7 +302,7 @@ def main() -> int:
     else:
         print(f"  {JAUNE}o{RAZ} {GRIS}controle impossible, juges ou constructeurs non renseignes{RAZ}")
 
-    print("\nParametres d'echantillonnage, identiques pour les trois generateurs")
+    print("\nParametres d'echantillonnage, identiques pour les quatre generateurs")
     for var in PARAMS_PARTAGES:
         val = env.get(var, "")
         marque = f"{VERT}v{RAZ}" if val else f"{JAUNE}o{RAZ}"
