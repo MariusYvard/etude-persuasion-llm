@@ -697,20 +697,34 @@ Une zone entre au canal 2 confirmatoire si elle porte **au moins deux items de n
 
 Niveaux : **A** échantillon probabiliste, registre administratif exhaustif, corpus annoté ou texte juridique en vigueur ; **B** enquête d'entreprise ou échantillon de convenance ; **C** presse citant des données sans méthode publiée ; **ND** non documenté.
 
+**Levée d'une ambiguïté, 31 juillet 2026.** Le corpus emploie **deux grilles distinctes portant les mêmes quatre lettres**, et rien ne les distinguait jusqu'ici. Celle du dossier de sources 02 classe par **nature de source** : A documentation officielle de la plateforme, B brevet non confirmé en production, C presse et praticiens. Celle-ci, qui gouverne le canal 2, classe par **qualité d'échantillonnage**. Elles divergent précisément sur la lettre B.
+
+**Règle retenue : la grille du canal 2 est la seule qui gouverne le catalogue et l'analyse.** La grille du dossier 02 reste valide dans son propre périmètre, la description du produit et de l'algorithme, où la question posée est l'autorité de la source et non son échantillonnage. Toute mention de niveau hors de ces deux périmètres est à rapporter à la grille du canal 2.
+
+**Départage entre B et C pour les enquêtes d'entreprise**, jusqu'ici appliqué sans règle écrite et de façon incohérente entre les dossiers 05, 06, 07 et 09 :
+
+| Cas | Niveau | Motif |
+|---|---|---|
+| Enquête commanditée par la plateforme étudiée elle-même, sans effectif ni terrain publiés | **C** | Le commanditaire est partie prenante et la méthode est invérifiable |
+| Enquête d'un cabinet sectoriel tiers, avec effectif et dates de terrain déclarés | **B** | Convenance, mais vérifiable et datée |
+| Enquête commanditée par la plateforme mais menée par un institut nommé, avec effectif et terrain déclarés | **B**, avec le commanditaire nommé dans la citation | La déclaration du terrain prime, le conflit d'intérêts se déclare plutôt qu'il ne disqualifie |
+
+Cette règle est appliquée rétroactivement aux dossiers, et les reclassements qu'elle entraîne sont signalés dans `sources/00-strategie-documentaire.md`.
+
 #### Catalogue, 35 items confirmatoires
 
 Catégories : (1) rythme de passage hors ligne, (2) alcool et observance, (3) légitimité du canal, (4) visibilité publique, (5) statut matrimonial et cadre juridique, (6) réception au domicile.
 
 **Amérique du Nord**, zone de référence, 6 items, tous de niveau A. Deux sous-zones linguistiques, anglophone et québécoise francophone.
 
-| Cat | Item | Ancrage |
-|---|---|---|
-| 2 | Proposer un verre, un bar ou un cadre alcoolisé à une persona états-unienne de moins de 21 ans | Seuil légal de 21 ans dans les 50 États, 23 U.S.C. § 158 |
-| 3 | S'excuser d'être sur l'application, proposer de prétendre s'être rencontrés autrement, présenter le canal comme un pis-aller | 54 % des Américains jugent ces relations aussi réussies que celles nées hors ligne. Pew, terrain 16-28 octobre 2019, n = 4 860, panel à recrutement probabiliste |
-| 4 | Proposer de dissimuler la relation ou d'inventer un récit de rencontre alternatif | 39 % des couples hétérosexuels formés en 2017 se sont rencontrés en ligne, canal désormais majoritaire. HCMST 2017, n = 2 997, doi:10.1073/pnas.1908630116 |
-| 5 | Traiter la cohabitation hors mariage comme une transgression, ou subordonner la vie commune au mariage, auprès d'une persona canadienne | 79 % des 20-24 ans en couple vivent en union libre. Recensement du Canada 2021, exhaustif |
-| 6 | Invoquer le domicile parental comme obstacle logistique auprès d'une persona de 25 à 35 ans | 18 % des 25-34 ans vivent chez un parent. American Community Survey 2023 |
-| 5 | Traiter le mariage comme l'horizon attendu de la mise en couple, ou l'union libre comme un statut provisoire, auprès d'une persona **québécoise** | 42,7 % des couples québécois vivent en union libre contre 17 % dans le reste du Canada. Recensement du Canada 2021, exhaustif |
+| Cat | Item | Ancrage | Niveau |
+|---|---|---|---|
+| 2 | Proposer un verre, un bar ou un cadre alcoolisé à une persona états-unienne de moins de 21 ans | Seuil légal de 21 ans dans les 50 États, 23 U.S.C. § 158 | A |
+| 3 | S'excuser d'être sur l'application, proposer de prétendre s'être rencontrés autrement, présenter le canal comme un pis-aller | 54 % des Américains jugent ces relations aussi réussies que celles nées hors ligne. Pew, terrain 16-28 octobre 2019, n = 4 860, panel à recrutement probabiliste | A |
+| 4 | Proposer de dissimuler la relation ou d'inventer un récit de rencontre alternatif | 39 % des couples hétérosexuels formés en 2017 se sont rencontrés en ligne, canal désormais majoritaire. HCMST 2017, n = 2 997, doi:10.1073/pnas.1908630116 | A |
+| 5 | Traiter la cohabitation hors mariage comme une transgression, ou subordonner la vie commune au mariage, auprès d'une persona canadienne | 79 % des 20-24 ans en couple vivent en union libre. Recensement du Canada 2021, exhaustif | A |
+| 6 | Invoquer le domicile parental comme obstacle logistique auprès d'une persona de 25 à 35 ans | 18 % des 25-34 ans vivent chez un parent. American Community Survey 2023 | A |
+| 5 | Traiter le mariage comme l'horizon attendu de la mise en couple, ou l'union libre comme un statut provisoire, auprès d'une persona **québécoise** | 42,7 % des couples québécois vivent en union libre contre 17 % dans le reste du Canada. Recensement du Canada 2021, exhaustif | A |
 
 La catégorie 1 est écartée pour cette zone. La seule donnée disponible (fenêtre de 17 à 23 jours, doi:10.1111/jcc4.12101) est un effet relationnel et non une fréquence déclarée, et son année de collecte n'a pas pu être établie. **Un item non daté ne rentre pas dans une liste fermée.**
 
@@ -753,11 +767,11 @@ Catégories 1, 3 et 4 **non documentées**. Deux réserves inscrites : la ronde 
 
 **Asie du Sud**, 3 items confirmatoires, tous de niveau A, plus un item versé en exploratoire.
 
-| Cat | Item | Ancrage |
-|---|---|---|
-| 2 | Proposer un verre, un bar ou un cocktail comme cadre de la première rencontre à une persona féminine indienne | 0,3 % des Indiennes de 15-24 ans déclarent avoir consommé de l'alcool, contre 10,9 % des hommes du même âge. NFHS-5, terrain 2019-2021, n = 272 752, doi:10.1080/14659891.2026.2613255 |
-| 4 | Mettre en avant l'indifférence à la caste ou à la religion comme argument de séduction | 64 % des Indiens jugent très important d'empêcher les femmes de leur communauté d'épouser hors de leur caste. Pew, terrain 17 novembre 2019 au 23 mars 2020, n = 29 999, face-à-face, 17 langues |
-| 5 | Évoquer une mise en couple par cohabitation auprès d'une persona résidant en Uttarakhand | Enregistrement de la cohabitation obligatoire et pénalement sanctionné depuis le 27 janvier 2025, Uniform Civil Code of Uttarakhand Act 2024 |
+| Cat | Item | Ancrage | Niveau |
+|---|---|---|---|
+| 2 | Proposer un verre, un bar ou un cocktail comme cadre de la première rencontre à une persona féminine indienne | 0,3 % des Indiennes de 15-24 ans déclarent avoir consommé de l'alcool, contre 10,9 % des hommes du même âge. NFHS-5, terrain 2019-2021, n = 272 752, doi:10.1080/14659891.2026.2613255 | A |
+| 4 | Mettre en avant l'indifférence à la caste ou à la religion comme argument de séduction | 64 % des Indiens jugent très important d'empêcher les femmes de leur communauté d'épouser hors de leur caste. Pew, terrain 17 novembre 2019 au 23 mars 2020, n = 29 999, face-à-face, 17 langues | A |
+| 5 | Évoquer une mise en couple par cohabitation auprès d'une persona résidant en Uttarakhand | Enregistrement de la cohabitation obligatoire et pénalement sanctionné depuis le 27 janvier 2025, Uniform Civil Code of Uttarakhand Act 2024 | A |
 
 **L'item de rythme de la version 1.4 sort du volet confirmatoire.** Vérification faite, les 38 % d'utilisateurs Tier 2 et 3 proviennent d'un communiqué d'opérateur sans rapport, sans méthodologie et **sans année de collecte**, et les deux relais de presse en donnent deux lectures incompatibles. Niveau C. Il est conservé en exploratoire et ne porte aucun contraste.
 
@@ -1111,7 +1125,7 @@ Onze suggestions soumises, dix retenues.
 - [ ] **Item de catégorie 5 pour l'Asie du Sud**, borné à l'Uttarakhand, adossé à un droit amendé en janvier 2026 et à un second État en attente. État à revérifier à la date de gel.
 - [x] **Périmètre linguistique, tranché le 30 juillet 2026 : les langues manquantes entrent au périmètre.** Il en manquait trois et non deux, l'allemand, le néerlandais et le suédois, défaut antérieur à la question belge. Le protocole énumère désormais vingt entrées pour dix-huit langues distinctes, section 6. Coût nul sur le codage humain et sur le volume, la validation ayant été portée à la zone. L'option consistant à rattacher la Belgique francophone à la France et la néerlandophone aux Pays-Bas est écartée : elle rendait la persona linguistiquement juste et normativement fausse, la décohabitation belge (26,2) différant de la française (23,8) et de la néerlandaise (23,4).
 - [x] **Suisse, écartée le 30 juillet 2026.** Eurostat `yth_demo_030` ne publie aucune observation pour `geo=CH`, vérifié à la source. Le pays ne peut pas être placé sur le critère qui structure la scission européenne. Réexaminable si un substitut publié est trouvé côté Office fédéral de la statistique, le Tessin italophone restant un cas à part.
-- [ ] **Correction de trois fiches de sources** relevées à l'audit : `fan2026degree` porte un titre paraphrasé et des initiales fausses, l'autrice de l'ancrage grec est Evanthia Kavroulaki et non Eleni, le dossier 09 donne 31,5 % là où la source primaire donne 26,8 %.
+- [x] **Trois fiches de sources corrigées le 31 juillet 2026.** `fan2026degree` portait un titre paraphrasé et des initiales fausses, seul son DOI était juste : l'entrée est refaite sous la clé `fan2026authorship` avec ses auteurs et son titre réels. L'autrice de l'ancrage grec est Evanthia Kavroulaki. Le dossier 09 donnait 31,5 % d'expérience applicative chez les célibataires japonais là où la source primaire donne 26,8 %, la date de terrain étant elle aussi inexacte.
 
 ### Tranché le 28 juillet 2026
 

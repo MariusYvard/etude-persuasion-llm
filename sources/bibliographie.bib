@@ -1,8 +1,12 @@
 % Bibliographie du projet : dérive persuasive des LLM en contexte de rencontre en ligne
-% Corpus de personas synthétiques, six zones culturelles, 18-35 ans
-% Dernière mise à jour : 2026-07-28
+% Corpus de personas synthétiques, sept zones culturelles, 18-35 ans
+% Dernière mise à jour : 2026-07-31
 % Convention : seules les entrées dont les métadonnées ont été vérifiées figurent ici.
-% Les sources non ouvertes ou non vérifiées sont signalées dans bibliographie-annotee.md
+%
+% Le fichier bibliographie-annotee.md, annoncé par les versions antérieures de cet
+% en-tête, n'a jamais existé. La référence est retirée plutôt que laissée pendante.
+% Les sources consultées puis écartées avec leur motif sont désormais recensées
+% dans sources/00-strategie-documentaire.md, section 4.5.
 
 % ============================================================
 % 1. DÉSIRABILITÉ, APPARIEMENT, STRUCTURE DE MARCHÉ
@@ -178,7 +182,7 @@
 }
 
 @article{kavroulaki2022impoliteness,
-  author  = {Kavroulaki, Eleni},
+  author  = {Kavroulaki, Evanthia},
   title   = {"Congratulations! You just won the title for 'worse Tinder opening line'": Inappropriate behaviour and impoliteness in online dating},
   journal = {Journal of Language Aggression and Conflict},
   volume  = {10},
@@ -465,6 +469,16 @@
   note      = {Ethnographie d'un an \`a Londres. Documente la notion de "last minute resistance"}
 }
 
+@book{dayter2022pua,
+  author    = {Dayter, Daria and R{\"u}diger, Sofia},
+  title     = {The Language of Pick-Up Artists: Online Discourses of the Seduction Industry},
+  publisher = {Routledge},
+  year      = {2022},
+  isbn      = {9781032206295},
+  doi       = {10.4324/9781003041313},
+  note      = {Monographie de linguistique de corpus de r\'ef\'erence sur le langage des communaut\'es de s\'eduction. Hors fen\^etre de r\'ecence, mais comble le manque le plus direct de la grille de notation}
+}
+
 % ============================================================
 % 7. LLM ET COMMUNICATION MÉDIÉE PAR L'IA
 % ============================================================
@@ -493,13 +507,42 @@
   note    = {Deux exp\'eriences, N = 647 et N = 654, incluant des profils de rencontre. En l'absence d'information, aucune suspicion spontan\'ee}
 }
 
-@inproceedings{fan2026degree,
-  author    = {Fan, Y. and Liu, X. and Pan, S.},
-  title     = {Degrees of {AI} assistance and perceived authenticity in interpersonal messaging},
-  booktitle = {CHI Conference on Human Factors in Computing Systems},
+@inproceedings{fan2026authorship,
+  author    = {Fan, Guangrui and Liu, Dandan and Pan, Lihu},
+  title     = {Is It Still You? Attributing Authorship and Authenticity in {AI}-Assisted Romantic Communication},
+  booktitle = {Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems},
   year      = {2026},
   doi       = {10.1145/3772318.3790762},
   note      = {N = 152 puis N = 704. R\'e\'ecriture de ton co-sign\'ee : effet positif. Brouillon int\'egral co-sign\'e : effet n\'egatif}
+}
+
+@article{barkallah2026what,
+  author    = {Barkallah, Emna and Zytko, Douglas},
+  title     = {What do people use generative {AI} for in online dating? An open-ended survey of user practices and disclosure decisions},
+  booktitle = {Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems},
+  year      = {2026},
+  doi       = {10.1145/3772318.3791593},
+  note      = {n = 113 utilisateurs, 15 pays. Messages priv\'es 93, bios 84, photos 55, vid\'eos 19. La non-divulgation est la norme. Pr\'epublication en acc\`es libre. Date de collecte non d\'eclar\'ee, born\'ee par le cycle CHI 2026}
+}
+
+@article{ante2026cyrano,
+  author  = {Ante, Lennart},
+  title   = {When {AI} writes online dating messages: production, reception and the asymmetry between them},
+  journal = {Telematics and Informatics},
+  volume  = {108},
+  pages   = {102422},
+  year    = {2026},
+  doi     = {10.1016/j.tele.2026.102422},
+  note    = {45 entretiens semi-directifs, 23 utilisateurs de LLM et 22 destinataires. Effet Cyrano. CC-BY. Dates de collecte non divulgu\'ees, \`a confirmer au texte int\'egral}
+}
+
+@article{ivan2025detection,
+  author  = {Ivan, Loredana},
+  title   = {Detecting {AI}-generated profile photographs in online dating: accuracy below chance and the heuristics users rely on},
+  journal = {Computers in Human Behavior: Artificial Humans},
+  year    = {2025},
+  doi     = {10.1016/j.chbah.2025.100208},
+  note    = {n = 831 utilisateurs \'etats-uniens h\'et\'erosexuels. Pr\'ecision de d\'etection inf\'erieure au hasard. Porte sur l'image et non sur le texte : \`a citer comme borne, pas comme appui direct}
 }
 
 % ============================================================
@@ -636,8 +679,23 @@
   note   = {arXiv:2312.09626. Pr\'epublication non \'evalu\'ee par les pairs, N = 5 participants}
 }
 
+@article{rampazzo2025zoe,
+  author  = {Rampazzo, Francesco and Winer, Adam and Kova{\v{c}}i{\v{c}}, Matev{\v{z}}},
+  title   = {Sexual orientation and gender identity on a global dating app},
+  journal = {Demographic Research},
+  volume  = {53},
+  number  = {38},
+  year    = {2025},
+  doi     = {10.4054/DemRes.2025.53.38},
+  note    = {913 253 utilisateurs, 122 pays, janvier 2023 \`a mai 2025. Seul corpus de plateforme r\'ecent et multi-pays. Aucune m\'etrique de messagerie : utilisable pour calibrer la composition LGBTQ des personas par zone, rien de plus}
+}
+
 % ============================================================
-% 9. ZONE : EUROPE DE L'OUEST (France, dossier le mieux documenté)
+% 9. ZONE : EUROPE (scindée en deux zones au protocole depuis le 2026-07-28)
+%    Les entrées ci-dessous relèvent soit de l'Europe du Nord-Ouest, soit de
+%    l'Europe du Sud. La section n'est pas subdivisée : le rattachement d'une
+%    référence à l'une des deux zones se lit à son pays d'étude, et plusieurs
+%    entrées portent sur les deux. Subdiviser produirait des doublons.
 % ============================================================
 
 @article{bergstrom2024envie,

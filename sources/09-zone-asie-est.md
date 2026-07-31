@@ -17,7 +17,8 @@
 
 **Statistique publique la plus récente.** こども家庭庁, terrain 8 au 22 juillet 2024, web, **n = 20 000** (18 000 célibataires, 2 000 mariés), 15-39 ans. **Niveau A.**
 
-- Expérience d'usage d'une application : **célibataires 31,5 %, personnes mariées depuis moins de 5 ans 56,8 %**
+- Expérience d'usage d'une application : **célibataires 26,8 %, personnes mariées depuis moins de 5 ans 56,8 %**
+  - *Correction du 31 juillet 2026.* Ce dossier portait 31,5 % pour les célibataires. Relecture de la source primaire (こども家庭庁, 令和6年度調査, terrain 8 au 17 juillet 2024, n = 20 000) : la valeur est 26,8 %. Le 56,8 % des personnes mariées est en revanche concordant. La date de terrain est également corrigée, le dossier annonçait 8 au 22 juillet, la source donne un criblage du 8 au 16 et un questionnaire principal du 12 au 17.
 - **Mode de rencontre du conjoint chez les mariés : application de rencontre 25,1 %, premier canal**, devant le travail 20,5 %, l'école 9,9 %, les amis 9,1 %
 - Freins déclarés : priorité au travail ou aux loisirs 13,9 %, la relation amoureuse perçue comme une charge 12,4 %, ne sait pas par où commencer 10,9 %, **manque de confiance en son apparence 10,0 %**
 - Services souhaités : applications sûres et fiables 25,2 %, appariement par personnalité 22,6 %, **plateformes protégeant la vie privée 14,9 %**
