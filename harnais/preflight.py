@@ -127,7 +127,8 @@ CIBLES = [
      "$ALIBABA_BASE_URL/models",
      lambda k: {"Authorization": f"Bearer {k}"}),
     # Cinquieme generateur servi par NVIDIA et non par son editeur.
-    ("GEN_MODEL_MOONSHOT", "NVIDIA", "NVIDIA_API_KEY",
+    # Kimi et GLM ont ete essayes : listes au catalogue, non invocables.
+    ("GEN_MODEL_MINIMAX", "NVIDIA", "NVIDIA_API_KEY",
      "https://integrate.api.nvidia.com/v1/models",
      lambda k: {"Authorization": f"Bearer {k}"}),
 ]
@@ -143,16 +144,43 @@ SONDE_PROMPT = "Invente un mot qui n'existe pas. Reponds par ce seul mot."
 SONDE_TIRAGES = 4
 
 
-def _post(url: str, entetes: dict, charge: dict) -> str:
+def _post(url: str, entetes: dict, charge: dict, delai: int = 60) -> str:
     corps = json.dumps(charge).encode("utf-8")
     entetes = dict(entetes)
     entetes["Content-Type"] = "application/json"
     requete = urllib.request.Request(url, data=corps, headers=entetes, method="POST")
-    with urllib.request.urlopen(requete, timeout=60) as reponse:
+    with urllib.request.urlopen(requete, timeout=delai) as reponse:
         rep = json.loads(reponse.read().decode("utf-8"))
     if "content" in rep:  # forme Anthropic
         return "".join(b.get("text", "") for b in rep["content"]).strip()
     return rep["choices"][0]["message"]["content"].strip()
+
+
+def appelable(modele: str, cle: str, delai: int = 120) -> tuple:
+    """Etre au catalogue NVIDIA ne garantit pas d'etre invocable par le compte.
+
+    Retourne (etat, detail) avec etat dans ok, lent, mort.
+
+    Seul le 404 est fatal : il signifie que le modele n'est pas deploye pour ce
+    compte. 429 et 503 sont des refus temporaires de capacite, et un depassement
+    de delai est un demarrage a froid, frequent sur le palier gratuit. Traiter
+    ces trois cas comme des echecs ferait echouer le preflight sur des modeles
+    parfaitement utilisables en production.
+    """
+    charge = {"model": modele, "max_tokens": 8, "temperature": 1.0,
+              "messages": [{"role": "user", "content": "Dis bonjour."}]}
+    try:
+        _post("https://integrate.api.nvidia.com/v1/chat/completions",
+              {"Authorization": f"Bearer {cle}"}, charge, delai)
+        return "ok", "repond a l'inference"
+    except urllib.error.HTTPError as err:
+        if err.code == 404:
+            return "mort", "liste au catalogue mais NON INVOCABLE, HTTP 404"
+        if err.code in (429, 503):
+            return "lent", f"HTTP {err.code}, capacite momentanement indisponible"
+        return "mort", f"HTTP {err.code}"
+    except Exception:
+        return "lent", f"pas de reponse en {delai} s, demarrage a froid probable"
 
 
 def sonde(nom: str, url: str, entetes: dict, modele: str, temp: float) -> set:
@@ -183,7 +211,7 @@ GENERATEURS_ATTENDUS = [
     "GEN_MODEL_OPENAI",
     "GEN_MODEL_MISTRAL",
     "GEN_MODEL_ALIBABA",
-    "GEN_MODEL_MOONSHOT",
+    "GEN_MODEL_MINIMAX",
 ]
 
 # Lignee du modele de base, pas simple prefixe d'editeur.
@@ -256,14 +284,21 @@ def main() -> int:
             echecs += 1
             continue
 
-        if var.startswith(("JUDGE_", "BUILDER_MODEL")):
+        if var.startswith(("JUDGE_", "BUILDER_MODEL")) or var == "GEN_MODEL_MINIMAX":
             if not cat_nvidia:
                 print(f"  {JAUNE}o{RAZ} {var:<22} {GRIS}{val}, catalogue NVIDIA illisible{RAZ}")
-            elif val in cat_nvidia:
-                print(f"  {VERT}v{RAZ} {var:<22} {GRIS}{val}, existe chez NVIDIA{RAZ}")
-            else:
-                print(f"  {ROUGE}x{RAZ} {var:<22} {GRIS}{val}, INTROUVABLE chez NVIDIA{RAZ}")
+            elif val not in cat_nvidia:
+                print(f"  {ROUGE}x{RAZ} {var:<22} {GRIS}{val}, absent du catalogue NVIDIA{RAZ}")
                 echecs += 1
+            else:
+                # Le catalogue ment. Il liste des modeles que le compte ne peut pas
+                # invoquer : constate le 30 juillet 2026 sur six roles du plan,
+                # tous listes et tous en 404 a l inference. Seul l appel fait foi.
+                etat, detail = appelable(val, env.get("NVIDIA_API_KEY", ""))
+                marque = {"ok": f"{VERT}v{RAZ}", "lent": f"{JAUNE}o{RAZ}"}.get(etat, f"{ROUGE}x{RAZ}")
+                print(f"  {marque} {var:<22} {GRIS}{val}, {detail}{RAZ}")
+                if etat == "mort":
+                    echecs += 1
             continue
 
         cible = next((c for c in CIBLES if c[0] == var), None)
@@ -367,9 +402,9 @@ def main() -> int:
             ("Alibaba", base_ali + "/chat/completions",
              {"Authorization": "Bearer " + env.get("ALIBABA_API_KEY", "")},
              env.get("GEN_MODEL_ALIBABA", "")),
-            ("Moonshot", "https://integrate.api.nvidia.com/v1/chat/completions",
+            ("MiniMax", "https://integrate.api.nvidia.com/v1/chat/completions",
              {"Authorization": "Bearer " + env.get("NVIDIA_API_KEY", "")},
-             env.get("GEN_MODEL_MOONSHOT", "")),
+             env.get("GEN_MODEL_MINIMAX", "")),
         ]
         chaud = float(env.get("GEN_TEMPERATURE", "1.0"))
         for nom, url, entetes, modele in cibles:

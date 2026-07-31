@@ -83,7 +83,7 @@ Motif. Le risque n'est pas la maladresse de traduction, c'est qu'une consigne ne
 |---|---|---|
 | Les cinq consignes C0 à C4 | quelques lignes chacune | 42 000 générations |
 | **La grille de notation**, onze codes et leurs définitions | environ une page | 126 000 notations |
-| **Les items du canal 2** et leurs conditions d'applicabilité | 34 items | 126 000 notations |
+| **Les items du canal 2** et leurs conditions d'applicabilité | 35 items | 126 000 notations |
 
 Le rapport coût-bénéfice est écrasant dans les deux cas ajoutés : une traduction unique, réutilisée plus de cent mille fois, sur les deux instruments dont dépendent le contraste 3 et le contraste 4. Ne pas les couvrir revenait à appliquer la rigueur là où elle est bon marché.
 
@@ -119,7 +119,7 @@ Le contraste 4 est ajouté par la scission de l'Europe. Il teste directement si 
 
 **Estimand, corrigé deux fois.** Un rho de Spearman unique sur sept zones ne dit rien : sa bande nulle à 95 % couvre déjà environ ±0,75. Le contraste compare donc une **distance de rang entre provenances à la distance à l'intérieur de chaque groupe**.
 
-Avec cinq générateurs, deux bandes de référence au lieu d'une : **trois rho intra-occidentaux** (Anthropic contre OpenAI, Anthropic contre Mistral, OpenAI contre Mistral) et **un rho intra-chinois** (Alibaba contre Moonshot). Le test porte sur les **six rho croisés**, chaque chinois contre chaque occidental. Intervalles par bootstrap au niveau de la persona.
+Avec cinq générateurs, deux bandes de référence au lieu d'une : **trois rho intra-occidentaux** (Anthropic contre OpenAI, Anthropic contre Mistral, OpenAI contre Mistral) et **un rho intra-chinois** (Alibaba contre MiniMax). Le test porte sur les **six rho croisés**, chaque chinois contre chaque occidental. Intervalles par bootstrap au niveau de la persona.
 
 **Le rho intra-chinois est la pièce que le plan à un seul générateur chinois ne pouvait pas fournir.** S'il est nettement supérieur aux six croisés, l'effet est de provenance. S'il leur est comparable, il est de modèle, et l'étiquette de provenance ne porte rien. Un W de Kendall sur le trio occidental sert de portillon : sans ordonnancement commun entre eux, la comparaison n'a pas d'objet.
 
@@ -154,7 +154,7 @@ Toute autre comparaison est exploratoire et sera étiquetée comme telle.
 
 **Contrôle de robustesse préenregistré.** Une condition unique, C3, sur un seul générateur, est rejouée à effort de raisonnement élevé, sur un sous-échantillon. Objectif : vérifier que la direction de l'effet tient. Coût marginal. Si la direction s'inverse, c'est un résultat à part entière et il sera rapporté comme tel.
 
-**Générateurs retenus** : Anthropic (`claude-opus-5`), OpenAI (`gpt-5.6-terra`), Mistral (`mistral-medium-3-5`), Alibaba (`qwen3.5-plus`), Moonshot (`moonshotai/kimi-k2.6`). Les résultats sont attachés à ces versions et le rapport doit le dire. Les deux générateurs chinois sont ajoutés le 30 juillet 2026, motif en section 3.6.2.
+**Générateurs retenus** : Anthropic (`claude-opus-5`), OpenAI (`gpt-5.6-terra`), Mistral (`mistral-medium-3-5`), Alibaba (`qwen3.5-plus`), MiniMax (`minimaxai/minimax-m3`). Les résultats sont attachés à ces versions et le rapport doit le dire. Les deux générateurs chinois sont ajoutés le 30 juillet 2026, motif en section 3.6.2.
 
 **Pile de notation : panel mixte à provenance équilibrée.** Version du 30 juillet 2026, après deux corrections successives.
 
@@ -245,7 +245,7 @@ C'est la contrainte la plus exigeante de tout le dispositif de notation. La gril
 
 **Escalade prévue.** Si le panel de juges échoue le seuil sur un sous-ensemble de langues, deux options préenregistrées, dans cet ordre : basculer ces langues seules vers un juge payant, ou retirer les codes concernés de l'analyse primaire pour ces langues. **Le choix entre les deux est fait avant de voir les résultats de l'étude, sur la seule base des scores d'accord du pilote.**
 
-**Modèles constructeurs du corpus.** L'étage d'échelle est produit par **cinq modèles constructeurs disjoints des cinq modèles testés**. Motif en section 6. Cette disjonction est impérative : générer le corpus avec un modèle testé contaminerait l'objet d'étude avec sa propre production.
+**Modèles constructeurs du corpus.** L'étage d'échelle est produit par **trois modèles constructeurs disjoints des cinq modèles testés**. Motif en section 6. Cette disjonction est impérative : générer le corpus avec un modèle testé contaminerait l'objet d'étude avec sa propre production.
 
 ### 3.6.1 Paliers d'accès et partage de données, à déclarer
 
@@ -257,7 +257,7 @@ Les cinq générateurs ne sont pas appelés dans des conditions commerciales ide
 | Mistral | Palier gratuit Free Experiment | Non documenté, à vérifier avant la production |
 | **OpenAI** | **Tokens complémentaires en échange de partage de données** | **Oui, assumé** |
 | Alibaba | Palier payant, Model Studio en mode international | À vérifier avant la production |
-| **Moonshot** | **Palier gratuit NVIDIA NIM, poids ouverts servis par un tiers** | **À vérifier avant la production** |
+| **MiniMax** | **Palier gratuit NVIDIA NIM, poids ouverts servis par un tiers** | **À vérifier avant la production** |
 | Panel de juges | Palier gratuit NVIDIA NIM | À vérifier avant la production |
 
 **Le palier OpenAI retenu implique que les prompts et les sorties de cette condition sont transmis au fournisseur et susceptibles d'entrer dans ses jeux d'entraînement.** Décision prise en connaissance de cause pour raison budgétaire.
@@ -274,7 +274,7 @@ Les cinq générateurs ne sont pas appelés dans des conditions commerciales ide
 
 ### 3.6.2 Quatrième et cinquième générateurs, provenance d'alignement non occidentale
 
-Décision du 30 juillet 2026, en deux temps. Le plan à trois générateurs comportait Anthropic, OpenAI et Mistral, soit deux alignements américains et un européen. **Deux générateurs chinois sont ajoutés**, `qwen3.5-plus` d'Alibaba puis `moonshotai/kimi-k2.6` de Moonshot.
+Décision du 30 juillet 2026, en deux temps. Le plan à trois générateurs comportait Anthropic, OpenAI et Mistral, soit deux alignements américains et un européen. **Deux générateurs chinois sont ajoutés**, `qwen3.5-plus` d'Alibaba puis `minimaxai/minimax-m3`.
 
 **Pourquoi deux et non un.** Avec une seule famille chinoise, le contraste 5 comparait cinq modèles nommés et ne pouvait rien énoncer sur une provenance : tout écart restait imputable à ce modèle-là. Avec deux, la comparaison devient 2 contre 3 et acquiert une bande de référence interne. **L'accord entre les deux modèles chinois devient lui-même un test** : s'ils se ressemblent davantage entre eux qu'ils ne ressemblent aux trois occidentaux, l'effet est de provenance ; s'ils divergent autant entre eux qu'avec le reste, il est de modèle. Cette distinction était indisponible avec un seul.
 
@@ -296,11 +296,15 @@ Les deux produisent la même prédiction sur trois générateurs occidentaux. El
 
 **Sensibilité préenregistrée sur Taïwan.** Le contraste 5 est calculé deux fois, avec et sans la sous-zone taïwanaise. Motif : l'alignement d'un modèle continental peut traiter les contenus relatifs à Taïwan différemment de ses autres contenus, ce qui produirait sur ces 20 personas un écart d'une nature étrangère à H3. Un écart entre les deux calculs est rapporté tel quel et non arbitré.
 
-**Modèles retenus.** `qwen3.5-plus` d'Alibaba, appelé sur le point d'accès Model Studio en mode international, compatible OpenAI. `moonshotai/kimi-k2.6` de Moonshot, appelé sur NVIDIA NIM. Tous deux de palier intermédiaire, comparables aux trois autres selon le critère « capacité de réflexion normale » retenu en section 3.6.
+**Modèles retenus.** `qwen3.5-plus` d'Alibaba, appelé sur le point d'accès Model Studio en mode international, compatible OpenAI. `minimaxai/minimax-m3`, appelé sur NVIDIA NIM.
 
-**Asymétrie d'hébergement, à déclarer.** Quatre générateurs sur cinq sont servis par leur éditeur. Kimi est servi par un tiers, NVIDIA NIM, seule voie disponible sans ouvrir un compte supplémentaire. Cela introduit pour cette condition une couche de service dont la quantification et le prompt système ne sont pas documentés, exactement la réserve déjà portée sur le panel de juges. **La condition Moonshot n'offre donc pas les mêmes garanties d'épinglage que les quatre autres**, et le rapport doit le dire. Le sens du biais est indéterminé, ce qui interdit de l'invoquer après coup pour expliquer un résultat.
+**Le second n'a pas été choisi, il a été le seul qui restait.** Kimi puis GLM ont été retenus successivement, tous deux figurent au catalogue NVIDIA, et aucun des deux n'est invocable par le compte de production : 404 pour Kimi, aucune réponse à 150 secondes sur une requête de huit jetons pour GLM. DeepSeek, qui répond, occupe déjà le siège J3. MiniMax est le dernier modèle chinois du catalogue qui réponde réellement. **Ce n'est pas une sélection sur critère, et le rapport doit le dire ainsi.**
 
-**Candidats écartés, pour un motif technique et non de qualité.** DeepSeek occupe déjà le siège J3 du panel de notation, l'y ajouter comme générateur violerait la règle selon laquelle un modèle ne note jamais les sorties de sa propre lignée. Les lignées `yi` et `step` construisent l'étage d'échelle du corpus, un générateur de ces lignées serait évalué sur des personas écrits par lui-même. Il ne restait donc qu'un vivier réduit : Qwen, Kimi, GLM et MiniMax. Les deux premiers sont retenus, **Kimi quittant en conséquence le vivier des remplaçants juges**, où MiniMax le remplace.
+**Asymétrie d'hébergement, à déclarer.** Quatre générateurs sur cinq sont servis par leur éditeur. MiniMax est servi par un tiers, NVIDIA NIM, seule voie disponible sans ouvrir un compte supplémentaire. Cela introduit pour cette condition une couche de service dont la quantification et le prompt système ne sont pas documentés, exactement la réserve déjà portée sur le panel de juges. **La condition MiniMax n'offre donc pas les mêmes garanties d'épinglage que les quatre autres**, et le rapport doit le dire. Le sens du biais est indéterminé, ce qui interdit de l'invoquer après coup pour expliquer un résultat.
+
+**Candidats écartés, pour un motif technique et non de qualité.** DeepSeek occupe déjà le siège J3 du panel de notation, l'y ajouter comme générateur violerait la règle selon laquelle un modèle ne note jamais les sorties de sa propre lignée. Les lignées `yi` et `step` construisent l'étage d'échelle du corpus, un générateur de ces lignées serait évalué sur des personas écrits par lui-même. Il ne restait donc qu'un vivier de quatre : Qwen, Kimi, GLM et MiniMax. **Deux de ces quatre ne répondent pas à l'inference**, section ci-dessus. Qwen et MiniMax sont retenus, **MiniMax quittant en conséquence le vivier des remplaçants juges, qui devient vide côté chinois.**
+
+**Conséquence à assumer.** Si J3 échoue le seuil d'accord sur une part significative des langues, aucun remplaçant de même provenance n'est disponible et la clause d'escalade de la section 3.6 s'applique directement : bascule des langues concernées vers un juge payant, ou retrait des codes concernés de l'analyse primaire.
 
 **Coût marginal, environ 20 dollars.** La notation ne bouge pas, la charge J1 par générateur restant à 8 400 quel que soit leur nombre (section 3.4). Le supplément se limite à 8 400 générations et 8 400 notations sur l'API d'Alibaba, plus 16 800 appels NVIDIA gratuits qui allongent la production de sept heures.
 
@@ -318,7 +322,7 @@ Provenance de J1 selon l'émetteur, tirage uniforme sur les trois non-émetteurs
 | OpenAI | 1/4 | 1/4 | 2/4 |
 | Mistral | 2/4 | **0** | 2/4 |
 | Alibaba | 2/4 | 1/4 | 1/4 |
-| Moonshot | 2/4 | 1/4 | 1/4 |
+| MiniMax | 2/4 | 1/4 | 1/4 |
 
 **Le passage à cinq générateurs atténue le défaut sans le supprimer.** Une seule cellule reste à effectif nul, Mistral n'étant jamais noté par un juge français, et les cinq lignes du tableau restent différentes les unes des autres. La composition du jury dépend donc toujours de l'émetteur. L'interaction n'est donc pas estimable, et un confondant non estimable n'est pas corrigeable après coup.
 
@@ -337,6 +341,32 @@ Provenance de J1 selon l'émetteur, tirage uniforme sur les trois non-émetteurs
 **Un effet secondaire utile.** Cette règle neutralise aussi le conflit d'intérêts de second ordre signalé en section 10.1 : Opus 5 a coconçu la grille, il est générateur, et il est J1 pour un tiers des messages des trois autres et jamais des siens. Les comparaisons entre générateurs échappent désormais à ce chemin.
 
 **Correction d'un énoncé faux de la version 1.4.** La phrase « chaque message est noté par au moins deux provenances différentes, et le plus souvent trois » est arithmétiquement inexacte. Deux provenances sont garanties par J2 et J3. Une troisième n'apparaît que dans un quart des messages, et jamais pour ceux émis par Mistral. La composition réelle du panel, tous messages confondus, est de 50 % américaine, 41,7 % chinoise et 8,3 % française. **Ce déséquilibre est déclaré comme caractéristique de l'instrument.**
+
+### 3.6.4 Figurer au catalogue n'est pas être appelable
+
+**Constat du 30 juillet 2026, et il invalidait une partie du plan sans qu'aucun contrôle ne le voie.** Le préflight vérifiait qu'un identifiant de modèle figure dans le catalogue renvoyé par `GET /v1/models`. Cette vérification est insuffisante : **le catalogue NVIDIA liste des modèles que le compte ne peut pas invoquer**, et l'appel échoue alors en HTTP 404, « Function not found for account ».
+
+Résultat de la vérification par appel réel, un prompt de huit jetons par modèle :
+
+| Rôle prévu | Modèle | Catalogue | Inference |
+|---|---|---|---|
+| Générateur 5 | `moonshotai/kimi-k2.6` | listé | **404** |
+| Remplaçant J3 | `z-ai/glm-5.2` | listé | **aucune réponse à 150 s** |
+| Constructeur 2 | `01-ai/yi-large` | listé | **404** |
+| Constructeur 3 | `ai21labs/jamba-1.5-large-instruct` | listé | **404** |
+| Constructeur 4 | `writer/palmyra-creative-122b` | listé | **404** |
+| Remplaçant J2 | `microsoft/phi-3.5-moe-instruct` | listé | **404** |
+| J2 | `meta/llama-3.3-70b-instruct` | listé | répond |
+| J3 | `deepseek-ai/deepseek-v4-pro` | listé | répond, démarrage à froid long |
+| Constructeur 1 | `google/gemma-4-31b-it` | listé | répond |
+| Constructeur 5 | `stepfun-ai/step-3.7-flash` | listé | répond |
+| Remplaçants J2 | `nvidia/nemotron-3-super-120b-a12b`, `nvidia/nemotron-3-ultra-550b-a55b` | listés | répondent |
+
+**Six rôles du plan sur onze reposaient sur des modèles inutilisables**, et le contrôle automatique les déclarait tous valides. Le défaut aurait été découvert au premier appel de production, après construction du corpus.
+
+**Correction apportée au préflight.** Tout modèle servi par NVIDIA, quel que soit son rôle, est désormais vérifié par un appel d'inference réel et non par sa présence au catalogue. Un 404 est un échec bloquant, un dépassement de délai est signalé comme démarrage à froid et non comme échec.
+
+**Portée générale, à retenir pour la production.** Un identifiant de modèle n'est pas une garantie de disponibilité. La même prudence vaut pour les quatre autres fournisseurs, dont deux se sont d'ailleurs révélés indisponibles pour une raison distincte le même jour : solde de crédits épuisé côté Anthropic, quota dépassé côté OpenAI. **Ces trois modes de défaillance, modèle non déployé, crédits épuisés et quota dépassé, sont invisibles à toute vérification déclarative.**
 
 ### 3.7 Pilote, obligatoire avant production
 
@@ -497,30 +527,32 @@ Pour les zones où le registre de bio est documenté, il est appliqué. Cas le m
 
 14 par cellule, produites sous grammaire d'attributs.
 
-**Traitement du problème à la source.** L'étage d'échelle est produit par **cinq modèles constructeurs**, pas un seul. Un modèle qui écrit 490 bios laisse une signature stylistique ; cinq lignées différentes la diluent mécaniquement, à raison d'environ 98 bios chacune. C'est plus efficace et moins coûteux qu'un filtrage a posteriori.
+**Traitement du problème à la source.** L'étage d'échelle est produit par **plusieurs modèles constructeurs**, pas un seul. Un modèle qui écrit 490 bios laisse une signature stylistique, que des lignées différentes diluent mécaniquement. C'est plus efficace et moins coûteux qu'un filtrage a posteriori.
 
 **Affectation bloquée, règle ajoutée le 30 juillet 2026.** La version 1.4 disait « environ 98 bios chacune » sans dire comment les répartir. Une affectation par zone aurait confondu l'identité du constructeur avec la zone, c'est-à-dire avec le facteur que H3 teste.
 
-**490 personas d'échelle, 7 zones, 5 constructeurs : 70 personas par zone, 14 par constructeur et par zone.** Équilibre exact, bloc par zone. L'identifiant du constructeur est enregistré avec chaque persona et entre au modèle en effet aléatoire croisé, section 8.
+**490 personas d'échelle, 7 zones, 3 constructeurs : 70 personas par zone, réparties 24, 23 et 23.** Le constructeur qui reçoit 24 tourne d'une zone à l'autre, ce qui donne 164, 163 et 163 personas au total. Équilibre exact, bloc par zone. L'identifiant du constructeur est enregistré avec chaque persona et entre au modèle en effet aléatoire croisé, section 8.
 
-**Provenance des constructeurs, à déclarer comme caractéristique des stimuli.** Deux américains, deux chinois, un israélien. Aucun modèle d'une langue de zone, et aucun européen continental. Les personas indonésiennes, péruviennes ou grecques sont donc écrites par des modèles extérieurs à ces cultures, ce qui est exactement le mécanisme que H3 mesure chez les générateurs. La conséquence est traitée par le modérateur d'étage de la section 8 et déclarée en limite 12.
+**Provenance des constructeurs, à déclarer comme caractéristique des stimuli.** Deux américains, un chinois. Aucun modèle d'une langue de zone, et aucun européen continental. Les personas indonésiennes, péruviennes ou grecques sont donc écrites par des modèles extérieurs à ces cultures, ce qui est exactement le mécanisme que H3 mesure chez les générateurs. La conséquence est traitée par le modérateur d'étage de la section 8 et déclarée en limite 12.
 
-| | Constructeur | Lignée |
-|---|---|---|
-| 1 | `google/gemma-4-31b-it` | gemma |
-| 2 | `01-ai/yi-large` | yi |
-| 3 | `ai21labs/jamba-1.5-large-instruct` | jamba |
-| 4 | `writer/palmyra-creative-122b` | palmyra |
-| 5 | `stepfun-ai/step-3.7-flash` | step |
+| | Constructeur | Lignée | Réserve |
+|---|---|---|---|
+| 1 | `google/gemma-4-31b-it` | gemma | |
+| 2 | `stepfun-ai/step-3.7-flash` | step | |
+| 3 | `poolside/laguna-xs-2.1` | poolside | **Modèle spécialisé en code**, à surveiller au pilote |
 
-Palmyra est retenu pour sa spécialisation en écriture créative, utile à la variété des bios. C'est aussi celui à surveiller hors anglais, où sa couverture est la moins établie.
+**Trois constructeurs et non cinq, réduction subie du 30 juillet 2026.** La liste précédente en comptait cinq. Vérification faite par appel réel, `01-ai/yi-large`, `ai21labs/jamba-1.5-large-instruct` et `writer/palmyra-creative-122b` **figurent au catalogue NVIDIA et renvoient tous un 404 à l'inference** sur le compte de production. Les remplaçants testés, DBRX, Zamba, Phi et deux variantes Gemma, renvoient le même 404. Le vivier réellement invocable ne compte que les trois modèles ci-dessus.
+
+**Ce que la réduction coûte, et ce qu'elle ne coûte pas.** Elle réduit la dilution de la signature stylistique, qui était le motif du choix à cinq. Elle ne touche pas au critère d'acceptation, qui est la discrimination en aveugle entre étages et non le nombre de familles. **Si le corpus à trois constructeurs échoue la discrimination, il est refait, exactement comme prévu.** Le nombre de familles était un moyen, le seuil de 60 % reste la règle.
+
+**Réserve sur `poolside/laguna-xs-2.1`.** C'est un modèle spécialisé en code. Il a produit une phrase indonésienne correcte au test, mais rien ne garantit sa tenue sur 163 bios réparties en vingt langues. **Sensibilité préenregistrée** : si ses bios échouent le pré-filtre lexical ou la discrimination en aveugle dans une proportion supérieure à celle des deux autres, sa part est redistribuée sur Gemma et StepFun et le fait est rapporté.
 
 **Double contrainte de disjonction. La seconde est facile à oublier et elle est aussi importante que la première.**
 
 1. **Disjoints des cinq modèles testés.** Générer le corpus avec un modèle ensuite évalué reviendrait à lui soumettre sa propre production, avec un avantage de familiarité impossible à démêler de l'effet mesuré.
 2. **Disjoints des juges.** Les juges interviennent dans la notation de réalisme qui décide de l'acceptation du corpus. Un juge qui évalue le réalisme d'un texte écrit par sa propre famille n'est pas un juge, et c'est le contrôle d'acceptation lui-même qui s'effondre.
 
-Le plan mobilise donc **quinze lignées distinctes** : cinq générateurs, cinq candidats juges, cinq constructeurs. Aucun recouvrement.
+Le plan mobilise donc **onze lignées distinctes** : cinq générateurs, trois juges effectivement invocables, trois constructeurs. Aucun recouvrement.
 
 **Le préflight vérifie cette disjonction automatiquement, par lignée du modèle de base et non par préfixe d'éditeur.**
 
@@ -665,7 +697,7 @@ Une zone entre au canal 2 confirmatoire si elle porte **au moins deux items de n
 
 Niveaux : **A** échantillon probabiliste, registre administratif exhaustif, corpus annoté ou texte juridique en vigueur ; **B** enquête d'entreprise ou échantillon de convenance ; **C** presse citant des données sans méthode publiée ; **ND** non documenté.
 
-#### Catalogue, 34 items confirmatoires
+#### Catalogue, 35 items confirmatoires
 
 Catégories : (1) rythme de passage hors ligne, (2) alcool et observance, (3) légitimité du canal, (4) visibilité publique, (5) statut matrimonial et cadre juridique, (6) réception au domicile.
 
@@ -972,6 +1004,8 @@ Ce qui ne l'a pas été : la taxonomie elle-même, qui provient de la littératu
 
 17. **La rétrotraduction couvre les consignes et non les instruments culturels.** Les cinq consignes, textes les plus courts du dispositif, suivent la procédure rédaction, traduction, rétrotraduction. La grille de notation et les items du canal 2, qui portent l'inférence culturelle et sont appliqués 126 000 fois, ne la suivent pas. Le motif invoqué pour les consignes vaut a fortiori pour eux, et cette asymétrie est un choix de coût, pas de méthode.
 
+19. **Le vivier de modèles réellement invocable est plus étroit que le catalogue.** Six des onze rôles prévus reposaient sur des modèles listés mais non déployés pour le compte de production, section 3.6.4. Le plan a été ramené à ce qui répond : trois constructeurs au lieu de cinq, un vivier de remplaçants chinois vide, et un cinquième générateur qui est le dernier candidat disponible plutôt qu'un choix. **La composition finale du dispositif est donc contrainte par l'offre d'un hébergeur gratuit, ce qui est une dépendance à déclarer et un obstacle à la réplication** : un réplicateur disposant d'un autre compte n'aura pas nécessairement le même vivier.
+
 18. **La littérature de référence est plus ancienne que sa date de publication ne le suggère.** Un balayage systématique des collectes postérieures à juillet 2024 a été mené le 30 juillet 2026. Résultat : douze ans après la collecte de janvier 2014, **Bruch et Newman 2018 reste l'unique mesure publiée de la contribution du contenu du message net de la désirabilité**. Les trois publications de 2025 et 2026 qui en ont l'apparence reposent sur des données de 2016, 2017 et 2022. Aucun corpus de messages n'a été ouvert depuis Tyson et al. Aucune donnée comportementale postérieure à juillet 2024 n'existe pour l'Amérique latine, l'Asie du Sud, l'Asie du Sud-Est ni l'Europe du Sud. **Ce n'est pas une lacune de la recherche bibliographique, c'est l'état du champ, et il est rapporté comme tel.**
 
 ## 12. État des décisions
@@ -1011,7 +1045,7 @@ Angle à conserver pour ce travail ultérieur, parce qu'il est neuf : Fan et al.
 - [x] **Pilote obligatoire** sur 32 personas, trois critères éliminatoires, section 3.7.
 - [x] **Générateurs** : Anthropic (Opus 5), OpenAI, Mistral. Quatrième générateur ajouté le 30 juillet, section 3.6.2.
 - [x] **Pile de notation** : exclusion de la famille génératrice message par message, panel mixte à provenances contrastées, section 3.6.
-- [x] **Corpus produit par cinq modèles constructeurs disjoints des générateurs**, section 6.
+- [x] ~~Corpus produit par cinq modèles constructeurs~~ **ramené à trois le 30 juillet 2026**, les deux autres n'étant pas invocables, section 6.
 - [x] **Contrôle anti-gabarit** : discrimination en aveugle comme critère d'acceptation, cosinus et trigrammes distincts comme pré-filtres.
 - [x] **Consignes** : rédaction en anglais, traduction, rétrotraduction par un traducteur n'ayant pas vu l'original.
 - [x] **Sorties brutes** : jeu codé en accès ouvert, textes bruts sur demande motivée à l'auteur, sans accord d'usage écrit.
@@ -1044,7 +1078,7 @@ Angle à conserver pour ce travail ultérieur, parce qu'il est neuf : Fan et al.
 
 Audit adversarial mené avant la première génération. **Le dispositif de la version 1.4 ne tenait pas.** Trois défauts graves, sept moyens, tous corrigés ci-dessous. Le diagnostic unifiant : le contrôle était appliqué au niveau de la lignée alors que la conclusion est énoncée au niveau de la provenance.
 
-- [x] **Catalogue du canal 2 reconstruit**, section 7. Six sous-zones dont la zone de référence avaient un taux d'erreur nul par construction. Le contraste 3 testait la longueur du catalogue et le contraste 4 ressortait significatif sous hypothèse nulle stricte. 34 items confirmatoires, règle d'admission à deux items dont un de niveau A, sous-zone taïwanaise versée en exploratoire.
+- [x] **Catalogue du canal 2 reconstruit**, section 7. Six sous-zones dont la zone de référence avaient un taux d'erreur nul par construction. Le contraste 3 testait la longueur du catalogue et le contraste 4 ressortait significatif sous hypothèse nulle stricte. 35 items confirmatoires, règle d'admission à deux items dont un de niveau A, sous-zone taïwanaise versée en exploratoire.
 - [x] **Dénominateur d'occasion**, codage à trois modalités. Neutralise ensemble la densité inégale du catalogue et la verbosité croissante des consignes optimisantes.
 - [x] **Direction de l'erreur portée par l'item et non par la catégorie.** Japon et Corée portent des normes opposées sur la légitimité du canal, une grille unidirectionnelle aurait produit des erreurs de signe.
 - [x] **Contrastes de générateur calculés sur J2 et J3 seulement**, section 3.6.3. Deux cellules du plan générateur × provenance du juge étaient vides, donc le confondant n'était pas estimable a posteriori. Coût nul.
@@ -1062,7 +1096,7 @@ Audit adversarial mené avant la première génération. **Le dispositif de la v
 
 Onze suggestions soumises, dix retenues.
 
-- [x] **Cinquième générateur, `moonshotai/kimi-k2.6`.** Deux familles chinoises au lieu d'une, le contraste 5 gagne une bande de référence interne et devient interprétable. Servi par NVIDIA NIM faute d'un accès direct, asymétrie d'hébergement déclarée en section 3.6.2. Kimi quitte en conséquence le vivier des remplaçants juges, MiniMax l'y remplace.
+- [x] **Cinquième générateur, `minimaxai/minimax-m3`.** Deux familles chinoises au lieu d'une, le contraste 5 gagne une bande de référence interne et devient interprétable. Servi par NVIDIA NIM faute d'un accès direct, asymétrie d'hébergement déclarée en section 3.6.2. Kimi puis GLM ont été retenus d'abord et écartés parce qu'ils ne répondent pas à l'inference, section 3.6.4. Le vivier des remplaçants juges devient vide côté chinois.
 - [x] **Rétrotraduction étendue à la grille de notation et aux items du canal 2**, section 3.3. Elle ne couvrait que les cinq consignes, soit les textes les plus courts, alors que les deux instruments ajoutés portent l'inférence culturelle et sont appliqués 126 000 fois.
 - [x] **Sous-zone québécoise francophone ajoutée**, sections 6 et 7. Elle comble un manque déclaré et, surtout, fait du français la seule langue présente dans deux zones, ce qui est le seul endroit du plan où l'effet de langue se sépare de l'effet de zone.
 - [x] **Suisse, recherche menée, exclusion maintenue avec un motif corrigé.** Un substitut existe côté Office fédéral de la statistique mais il repose sur une définition du départ inverse de celle d'EU-SILC, donc non comparable. Annexe de robustesse préenregistrée montrant que trois routes indépendantes la placeraient en Europe du Nord-Ouest.
